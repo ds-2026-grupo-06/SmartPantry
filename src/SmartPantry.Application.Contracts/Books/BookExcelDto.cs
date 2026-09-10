@@ -4,9 +4,9 @@ namespace SmartPantry.Books;
 
 public class BookExcelDto
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
-    public string AuthorName { get; set; }
+    public required string AuthorName { get; set; }
 
     public BookType Type { get; set; }
 
