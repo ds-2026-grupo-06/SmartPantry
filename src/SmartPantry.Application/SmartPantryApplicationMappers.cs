@@ -9,9 +9,11 @@ namespace SmartPantry;
 public partial class SmartPantryBookToBookDtoMapper : MapperBase<Book, BookDto>
 {
     [MapperIgnoreTarget(nameof(BookDto.AuthorName))]
+    [MapperIgnoreTarget(nameof(BookDto.Id))]
     public override partial BookDto Map(Book source);
 
     [MapperIgnoreTarget(nameof(BookDto.AuthorName))]
+    [MapperIgnoreTarget(nameof(BookDto.Id))]
     public override partial void Map(Book source, BookDto destination);
 }
 
