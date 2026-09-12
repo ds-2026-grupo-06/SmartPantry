@@ -6,6 +6,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Modularity;
 using Volo.Abp.Validation;
 using Xunit;
+using SmartPantry.Authors;
 
 namespace SmartPantry.Books;
 
@@ -13,10 +14,12 @@ public abstract class BookAppService_Tests<TStartupModule> : SmartPantryApplicat
     where TStartupModule : IAbpModule
 {
     private readonly IBookAppService _bookAppService;
+    private readonly IAuthorAppService _authorAppService;
 
     protected BookAppService_Tests()
     {
         _bookAppService = GetRequiredService<IBookAppService>();
+        _authorAppService = GetRequiredService<IAuthorAppService>();
     }
 
     [Fact]
@@ -35,10 +38,20 @@ public abstract class BookAppService_Tests<TStartupModule> : SmartPantryApplicat
     [Fact]
     public async Task Should_Create_A_Valid_Book()
     {
-        //Act
+        // 1. Crear un autor con el DTO correcto
+        var author = await _authorAppService.CreateAsync(
+            new CreateUpdateAuthorDto
+            {
+                Name = "George Orwell",
+                BirthDate = new DateTime(1903, 6, 25)
+            }
+        );
+
+        // 2. Crear el libro con el AuthorId obtenido
         var result = await _bookAppService.CreateAsync(
             new CreateUpdateBookDto
             {
+                AuthorId = author.Id,
                 Name = "New test book 42",
                 Price = 10,
                 PublishDate = DateTime.Now,
@@ -50,7 +63,7 @@ public abstract class BookAppService_Tests<TStartupModule> : SmartPantryApplicat
         result.Id.ShouldNotBe(Guid.Empty);
         result.Name.ShouldBe("New test book 42");
     }
-    
+
     [Fact]
     public async Task Should_Not_Create_A_Book_Without_Name()
     {
