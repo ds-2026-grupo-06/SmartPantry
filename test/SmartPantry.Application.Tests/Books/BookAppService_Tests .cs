@@ -33,24 +33,30 @@ public abstract class BookAppService_Tests<TStartupModule> : SmartPantryApplicat
     }
 
     [Fact]
-    public async Task Should_Create_A_Valid_Book()
+    public virtual async Task Should_Create_A_Valid_Book()
     {
-        //Act
-        var result = await _bookAppService.CreateAsync(
-            new CreateUpdateBookDto
-            {
-                Name = "New test book 42",
-                Price = 10,
-                PublishDate = DateTime.Now,
-                Type = BookType.ScienceFiction
-            }
-        );
+        // Arrange: Crear un Author
+        var author = new Author
+        {
+            Name = "Test Author"
+        };
+        await AuthorRepository.InsertAsync(author);
 
-        //Assert
-        result.Id.ShouldNotBe(Guid.Empty);
-        result.Name.ShouldBe("New test book 42");
+        // Act: Crear el Book con Author válido
+        var input = new CreateBookDto
+        {
+            Title = "Test Book",
+            AuthorId = author.Id
+        };
+
+        var result = await BookAppService.CreateAsync(input);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Title.ShouldBe("Test Book");
+        result.AuthorId.ShouldBe(author.Id);
     }
-    
+
     [Fact]
     public async Task Should_Not_Create_A_Book_Without_Name()
     {
