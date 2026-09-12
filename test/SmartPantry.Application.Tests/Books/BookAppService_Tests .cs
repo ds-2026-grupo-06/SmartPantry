@@ -6,6 +6,9 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Modularity;
 using Volo.Abp.Validation;
 using Xunit;
+using SmartPantry.Authors;
+using SmartPantry.Books;
+using SmartPantry.Application.Contracts.Books;
 
 namespace SmartPantry.Books;
 
