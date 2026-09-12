@@ -5,7 +5,7 @@ namespace SmartPantry.Authors;
 
 public class Author : FullAuditedAggregateRoot<Guid>
 {
-    public required string Name { get; set; }
+    public string Name { get; set; }
 
     public DateTime BirthDate { get; set; }
 

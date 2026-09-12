@@ -14,6 +14,7 @@ jobs:
       - run: dotnet restore ./SmartPantry.slnx
       - run: dotnet build ./SmartPantry.slnx --configuration Release --no-restore
       - run: dotnet test ./SmartPantry.slnx --configuration Release --no-build
+
   frontend:
     runs-on: ubuntu-latest
     defaults:
@@ -28,4 +29,3 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn build
       - run: yarn test --watch=false --browsers=ChromeHeadless
- 

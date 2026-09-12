@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartPantry.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f55f47c573954461de5634804d93e88e77a0f771")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0af00d9d65456bc316a52a2895e1053594ea1085")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartPantry.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartPantry.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

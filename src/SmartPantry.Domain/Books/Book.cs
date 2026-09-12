@@ -5,7 +5,7 @@ namespace SmartPantry.Books;
 
 public class Book : AuditedAggregateRoot<Guid>
 {
-    public required string Name { get; set; }
+    public string Name { get; set; }
 
     public Guid AuthorId { get; set; }
 
