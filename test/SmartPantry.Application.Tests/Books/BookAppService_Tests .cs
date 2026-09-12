@@ -33,7 +33,7 @@ public abstract class BookAppService_Tests<TStartupModule> : SmartPantryApplicat
     }
 
     [Fact]
-    public virtual async Task Should_Create_A_Valid_Book()
+    public async Task Should_Create_A_Valid_Book()
     {
         // Arrange: Crear un Author
         var author = new Author
