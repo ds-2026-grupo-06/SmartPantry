@@ -1,0 +1,11 @@
+2026-09-12 09:56:31.610 -03:00 [INF] Started database migrations...
+2026-09-12 09:56:31.627 -03:00 [INF] Migrating schema for host database...
+2026-09-12 09:56:46.409 -03:00 [ERR] Failed executing DbCommand (28ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AbpAuditLogExcelFiles] (
+    [Id] uniqueidentifier NOT NULL,
+    [TenantId] uniqueidentifier NULL,
+    [FileName] nvarchar(256) NULL,
+    [CreationTime] datetime2 NOT NULL,
+    [CreatorId] uniqueidentifier NULL,
+    CONSTRAINT [PK_AbpAuditLogExcelFiles] PRIMARY KEY ([Id])
+);
