@@ -1,4 +1,8 @@
-﻿using SmartPantry.Books;
+﻿using System;
+using System.Threading.Tasks;
+using SmartPantry.Books;
+using SmartPantry.Authors;
+using Volo.Abp.Domain.Repositories;
 using Xunit;
 
 namespace SmartPantry.EntityFrameworkCore.Applications.Books;
@@ -7,7 +11,7 @@ namespace SmartPantry.EntityFrameworkCore.Applications.Books;
 public class EfCoreBookAppService_Tests : BookAppService_Tests<SmartPantryEntityFrameworkCoreTestModule>
 {
     [Fact]
-    public async Task Should_Create_A_Valid_Book()
+    public override async Task Should_Create_A_Valid_Book()
     {
         // Arrange: Crear un Author primero
         var authorRepository = GetRequiredService<IRepository<Author, Guid>>();
