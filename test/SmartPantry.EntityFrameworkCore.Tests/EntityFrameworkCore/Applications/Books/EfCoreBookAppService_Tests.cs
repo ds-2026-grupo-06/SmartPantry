@@ -11,7 +11,7 @@ namespace SmartPantry.EntityFrameworkCore.Applications.Books;
 public class EfCoreBookAppService_Tests : BookAppService_Tests<SmartPantryEntityFrameworkCoreTestModule>
 {
     [Fact]
-    public override async Task Should_Create_A_Valid_Book()
+    public async Task Should_Create_A_Valid_Book()
     {
         // Arrange: Crear un Author primero
         var authorRepository = GetRequiredService<IRepository<Author, Guid>>();
