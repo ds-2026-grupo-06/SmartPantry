@@ -7,8 +7,7 @@ using Xunit;
 
 namespace SmartPantry.Application.Tests.Books;
 
-public abstract class BookAppService_Tests<TStartupModule> : SmartPantryApplicationTestBase<TStartupModule>
-    where TStartupModule : class
+public abstract class BookAppService_Tests<TStartupModule>
 {
     protected IRepository<Author, Guid> AuthorRepository { get; set; }
     protected IRepository<Book, Guid> BookRepository { get; set; }
