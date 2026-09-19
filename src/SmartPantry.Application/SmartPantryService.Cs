@@ -31,7 +31,7 @@ public class SmartPantryService : ApplicationService, ISmartPantryService
             }).ToList();
     }
 
-    public async Task<ProductDto> CreateAsync(string barcode, string name, string brand, int nutriScore, int novaGroup)
+    public async Task<ProductDto> CreateAsync(string barcode, string name, string brand, string nutriScore, int novaGroup)
     {
         var product = await _productRepository.InsertAsync(
             new Product
