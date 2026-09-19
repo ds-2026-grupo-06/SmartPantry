@@ -33,6 +33,8 @@ public class SmartPantryDbContext :
 
     public DbSet<Book> Books { get; set; }
 
+    public DbSet<Product> Products { get; set; }
+
     #region Entities from the modules
 
     /* Notice: We only implemented IIdentityProDbContext and ISaasDbContext
@@ -100,6 +102,11 @@ public class SmartPantryDbContext :
             b.ConfigureByConvention(); //auto configure for the base class props
             b.Property(x => x.Name).IsRequired().HasMaxLength(128);
             b.HasOne<Author>().WithMany().HasForeignKey(x => x.AuthorId).IsRequired();
+        });
+
+        builder.Entity<Product>(b =>
+        {
+            b.ToTable("Products");
         });
 
         /* Configure your own tables/entities inside here */
