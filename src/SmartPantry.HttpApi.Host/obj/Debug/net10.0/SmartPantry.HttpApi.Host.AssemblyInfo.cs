@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartPantry.HttpApi.Host")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0a367521e72a8b2d433bb71a6053b9a8bd2b8f27")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+de127fd84dad8619f274fe81c4f61f6b75af4d92")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartPantry.HttpApi.Host")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartPantry.HttpApi.Host")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

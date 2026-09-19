@@ -34,14 +34,14 @@ public class SmartPantryService : ApplicationService, ISmartPantryService
     public async Task<ProductDto> CreateAsync(string barcode, string name, string brand, string nutriScore, int novaGroup)
     {
         var product = await _productRepository.InsertAsync(
-            new Product
-            {
-                Barcode = barcode,
-                Name = name,
-                Brand = brand,
-                NutriScore = nutriScore,
-                NovaGroup = novaGroup
-            }
+            new Product(
+                GuidGenerator.Create(), // Genera el ID que pide tu nuevo constructor
+                barcode,
+                name,
+                brand,
+                nutriScore,
+                novaGroup
+            )
         );
 
         return new ProductDto

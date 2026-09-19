@@ -4,9 +4,8 @@ namespace SmartPantry;
 
 [DependsOn(
     typeof(SmartPantryApplicationModule),
-    typeof(SmartPantryDomainTestModule)
+    typeof(SmartPantryDomainTestModule) 
 )]
 public class SmartPantryApplicationTestModule : AbpModule
 {
-
 }
