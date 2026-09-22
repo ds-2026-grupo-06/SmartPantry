@@ -28,4 +28,5 @@ jobs:
       - run: corepack enable
       - run: yarn install --frozen-lockfile
       - run: yarn build
+      - run: npx playwright install chromium --with-deps  
       - run: yarn test --watch=false --browsers=ChromeHeadless
