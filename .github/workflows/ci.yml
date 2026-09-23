@@ -1,6 +1,7 @@
 name: CI
 on:
   pull_request:
+    branches: [main, stg, prod]
   push:
     branches: [main, stg, prod]
 jobs:
@@ -11,6 +12,12 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
       - run: dotnet restore ./SmartPantry.slnx
       - run: dotnet build ./SmartPantry.slnx --configuration Release --no-restore
       - run: dotnet test ./SmartPantry.slnx --configuration Release --no-build
@@ -25,8 +32,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: yarn
+          cache-dependency-path: angular/yarn.lock
       - run: corepack enable
       - run: yarn install --frozen-lockfile
       - run: yarn build
-      - run: npx playwright install chromium --with-deps  
+      - run: yarn test --watch=false --browsers=ChromeHeadless
       - run: yarn test --watch=false --browsers=ChromeHeadless
