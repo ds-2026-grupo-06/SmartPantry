@@ -26,6 +26,7 @@
             },
             "index": "src/index.html",
             "polyfills": [
+              "zone.js",
               "src/polyfills.ts"
             ],
             "tsConfig": "tsconfig.app.json",
