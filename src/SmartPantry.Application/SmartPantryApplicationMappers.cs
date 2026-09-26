@@ -1,48 +1,21 @@
 using Riok.Mapperly.Abstractions;
 using Volo.Abp.Mapperly;
-using SmartPantry.Authors;
-using SmartPantry.Books;
+using SmartPantry.Products;
 
 namespace SmartPantry;
 
-[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
-public partial class SmartPantryBookToBookDtoMapper : MapperBase<Book, BookDto>
+[Mapper]
+public partial class ProductToProductDtoMapper : MapperBase<Product, ProductDto>
 {
-    [MapperIgnoreTarget(nameof(BookDto.AuthorName))]
-    public override partial BookDto Map(Book source);
+   public override partial ProductDto Map(Product source);
 
-    [MapperIgnoreTarget(nameof(BookDto.AuthorName))]
-    public override partial void Map(Book source, BookDto destination);
+    public override partial void Map(Product source, ProductDto destination);
+}
+[Mapper]
+public partial class CreateUpdateProductDtoToProductMapper : MapperBase<CreateUpdateProductDto, Product>
+{
+    public override partial Product Map(CreateUpdateProductDto source);
+
+    public override partial void Map(CreateUpdateProductDto source, Product destination);
 }
 
-[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
-public partial class SmartPantryCreateUpdateBookDtoToBookMapper : MapperBase<CreateUpdateBookDto, Book>
-{
-    public override partial Book Map(CreateUpdateBookDto source);
-
-    public override partial void Map(CreateUpdateBookDto source, Book destination);
-}
-
-[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
-public partial class SmartPantryAuthorToAuthorDtoMapper : MapperBase<Author, AuthorDto>
-{
-    public override partial AuthorDto Map(Author source);
-
-    public override partial void Map(Author source, AuthorDto destination);
-}
-
-[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
-public partial class SmartPantryCreateUpdateAuthorDtoToAuthorMapper : MapperBase<CreateUpdateAuthorDto, Author>
-{
-    public override partial Author Map(CreateUpdateAuthorDto source);
-
-    public override partial void Map(CreateUpdateAuthorDto source, Author destination);
-}
-
-[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
-public partial class SmartPantryAuthorToAuthorExcelDtoMapper : MapperBase<Author, AuthorExcelDto>
-{
-    public override partial AuthorExcelDto Map(Author source);
-
-    public override partial void Map(Author source, AuthorExcelDto destination);
-}

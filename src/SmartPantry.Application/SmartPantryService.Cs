@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using SmartPantry.Products;
 
 namespace SmartPantry;
 
-public class SmartPantryService : ApplicationService, ISmartPantryService
+public class SmartPantryService : ApplicationService//, ISmartPantryService
 {
     private readonly IRepository<Product, Guid> _productRepository;
 
@@ -31,29 +32,29 @@ public class SmartPantryService : ApplicationService, ISmartPantryService
             }).ToList();
     }
 
-    public async Task<ProductDto> CreateAsync(string barcode, string name, string brand, string nutriScore, int novaGroup)
-    {
-        var product = await _productRepository.InsertAsync(
-            new Product(
-                GuidGenerator.Create(), // Genera el ID que pide tu nuevo constructor
-                barcode,
-                name,
-                brand,
-                nutriScore,
-                novaGroup
-            )
-        );
+    // public async Task<ProductDto> CreateAsync(string barcode, string name, string brand, string nutriScore, int novaGroup)
+    //  {
+    //var product = await _productRepository.InsertAsync(
+    //new Product(
+    //GuidGenerator.Create(), // Genera el ID que pide tu nuevo constructor
+    //barcode,
+    //name,
+    //brand,
+    //nutriScore,
+    //novaGroup
+    //      )
+    //  );
 
-        return new ProductDto
-        {
-            Id = product.Id,
-            Barcode = product.Barcode,
-            Name = product.Name,
-            Brand = product.Brand,
-            NutriScore = product.NutriScore,
-            NovaGroup = product.NovaGroup
-        };
-    }
+    //return new ProductDto
+    //{
+    //Id = product.Id,
+    //Barcode = product.Barcode,
+    //Name = product.Name,
+    //Brand = product.Brand,
+    //NutriScore = product.NutriScore,
+    //NovaGroup = product.NovaGroup
+    //};
+    //  }
 
     public async Task DeleteAsync(Guid id)
     {
