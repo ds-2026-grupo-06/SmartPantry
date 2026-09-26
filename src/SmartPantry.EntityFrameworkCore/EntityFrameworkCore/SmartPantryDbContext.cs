@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
-using SmartPantry.Authors;
-using SmartPantry.Books;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -16,6 +14,7 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using SmartPantry.Products;
 
 namespace SmartPantry.EntityFrameworkCore;
 
@@ -29,9 +28,6 @@ public class SmartPantryDbContext :
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
-    public DbSet<Author> Authors { get; set; }
-
-    public DbSet<Book> Books { get; set; }
 
     public DbSet<Product> Products { get; set; }
 
@@ -86,28 +82,24 @@ public class SmartPantryDbContext :
         builder.ConfigureTenantManagement();
         builder.ConfigureBlobStoring();
 
-        builder.Entity<Author>(b =>
-        {
-            b.ToTable(SmartPantryConsts.DbTablePrefix + "Authors",
-                SmartPantryConsts.DbSchema);
-            b.ConfigureByConvention(); //auto configure for the base class props
-            b.Property(x => x.Name).IsRequired().HasMaxLength(AuthorConsts.MaxNameLength);
-            b.Property(x => x.ShortBio).HasMaxLength(AuthorConsts.MaxShortBioLength);
-        });
-
-        builder.Entity<Book>(b =>
-        {
-            b.ToTable(SmartPantryConsts.DbTablePrefix + "Books",
-                SmartPantryConsts.DbSchema);
-            b.ConfigureByConvention(); //auto configure for the base class props
-            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
-            b.HasOne<Author>().WithMany().HasForeignKey(x => x.AuthorId).IsRequired();
-        });
-
         builder.Entity<Product>(b =>
         {
             b.ToTable("Products");
         });
+
+        builder.Entity<Product>(p =>
+        {
+            p.ToTable(SmartPantryConsts.DbTablePrefix + "Products",
+                SmartPantryConsts.DbSchema);
+            p.ConfigureByConvention(); //auto configure for the base class props
+            p.Property(x => x.Barcode).IsRequired().HasMaxLength(50);
+            p.Property(x => x.Name).IsRequired().HasMaxLength(128);
+            p.Property(x => x.Brand).IsRequired().HasMaxLength(128);
+            p.Property(x => x.NutriScore).IsRequired().HasMaxLength(5);
+            p.Property(x => x.NovaGroup).IsRequired().HasMaxLength(5);
+
+        });
+
 
         /* Configure your own tables/entities inside here */
 
