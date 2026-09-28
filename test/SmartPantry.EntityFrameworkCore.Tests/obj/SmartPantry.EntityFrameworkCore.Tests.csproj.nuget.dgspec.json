@@ -448,6 +448,10 @@
               "target": "Package",
               "version": "[10.6.0, )"
             },
+            "Volo.Abp.Mapperly": {
+              "target": "Package",
+              "version": "[10.6.0, )"
+            },
             "Volo.Abp.PermissionManagement.Application": {
               "target": "Package",
               "version": "[10.6.0, )"
@@ -1972,6 +1976,9 @@
               "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\src\\SmartPantry.Application\\SmartPantry.Application.csproj": {
                 "projectPath": "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\src\\SmartPantry.Application\\SmartPantry.Application.csproj"
               },
+              "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\src\\SmartPantry.EntityFrameworkCore\\SmartPantry.EntityFrameworkCore.csproj": {
+                "projectPath": "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\src\\SmartPantry.EntityFrameworkCore\\SmartPantry.EntityFrameworkCore.csproj"
+              },
               "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\test\\SmartPantry.Domain.Tests\\SmartPantry.Domain.Tests.csproj": {
                 "projectPath": "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\test\\SmartPantry.Domain.Tests\\SmartPantry.Domain.Tests.csproj"
               }
@@ -1998,6 +2005,10 @@
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[17.14.1, )"
+            },
+            "Volo.Abp.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[10.6.0, )"
             }
           },
           "imports": [

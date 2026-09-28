@@ -6503,6 +6503,7 @@
       "Volo.Abp.Account.Application >= 10.6.0",
       "Volo.Abp.FeatureManagement.Application >= 10.6.0",
       "Volo.Abp.Identity.Application >= 10.6.0",
+      "Volo.Abp.Mapperly >= 10.6.0",
       "Volo.Abp.PermissionManagement.Application >= 10.6.0",
       "Volo.Abp.SettingManagement.Application >= 10.6.0",
       "Volo.Abp.TenantManagement.Application >= 10.6.0"
@@ -6581,6 +6582,10 @@
             "version": "[10.6.0, )"
           },
           "Volo.Abp.Identity.Application": {
+            "target": "Package",
+            "version": "[10.6.0, )"
+          },
+          "Volo.Abp.Mapperly": {
             "target": "Package",
             "version": "[10.6.0, )"
           },

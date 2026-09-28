@@ -4,14 +4,15 @@ using SmartPantry.Products;
 
 namespace SmartPantry;
 
-[Mapper]
-public partial class ProductToProductDtoMapper : MapperBase<Product, ProductDto>
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+public partial class ProductToProductDtoMapper : MapperBase<Product, SmartPantry.Products.ProductDto>
 {
-   public override partial ProductDto Map(Product source);
+    public override partial SmartPantry.Products.ProductDto Map(Product source);
 
-    public override partial void Map(Product source, ProductDto destination);
+    public override partial void Map(Product source, SmartPantry.Products.ProductDto destination);
 }
-[Mapper]
+
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Source)]
 public partial class CreateUpdateProductDtoToProductMapper : MapperBase<CreateUpdateProductDto, Product>
 {
     public override partial Product Map(CreateUpdateProductDto source);

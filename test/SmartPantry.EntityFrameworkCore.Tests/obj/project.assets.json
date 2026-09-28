@@ -4473,6 +4473,7 @@
           "Volo.Abp.Account.Application": "10.6.0",
           "Volo.Abp.FeatureManagement.Application": "10.6.0",
           "Volo.Abp.Identity.Application": "10.6.0",
+          "Volo.Abp.Mapperly": "10.6.0",
           "Volo.Abp.PermissionManagement.Application": "10.6.0",
           "Volo.Abp.SettingManagement.Application": "10.6.0",
           "Volo.Abp.TenantManagement.Application": "10.6.0"
@@ -4509,7 +4510,9 @@
         "dependencies": {
           "Microsoft.NET.Test.Sdk": "17.14.1",
           "SmartPantry.Application": "1.0.0",
-          "SmartPantry.Domain.Tests": "1.0.0"
+          "SmartPantry.Domain.Tests": "1.0.0",
+          "SmartPantry.EntityFrameworkCore": "1.0.0",
+          "Volo.Abp.EntityFrameworkCore.Sqlite": "10.6.0"
         },
         "compile": {
           "bin/placeholder/SmartPantry.Application.Tests.dll": {}

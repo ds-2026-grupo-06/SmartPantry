@@ -212,6 +212,8 @@ C:\Users\brian\OneDrive\Documentos\GitHub\SmartPantry\test\SmartPantry.TestBase\
 C:\Users\brian\OneDrive\Documentos\GitHub\SmartPantry\test\SmartPantry.TestBase\obj\Debug\net10.0\SmartPantry.TestBase.pdb
 C:\Users\brian\OneDrive\Documentos\GitHub\SmartPantry\test\SmartPantry.TestBase\obj\Debug\net10.0\SmartPantry.TestBase.genruntimeconfig.cache
 C:\Users\brian\OneDrive\Documentos\GitHub\SmartPantry\test\SmartPantry.TestBase\obj\Debug\net10.0\ref\SmartPantry.TestBase.dll
+C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\testhost.dll
+C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\xunit.abstractions.dll
 C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\EmptyFiles\archive\empty.7z
 C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\EmptyFiles\archive\empty.bz2
 C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\EmptyFiles\archive\empty.gz
@@ -255,9 +257,7 @@ C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBas
 C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\EmptyFiles\slide\empty.odp
 C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\EmptyFiles\slide\empty.pptx
 C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\testhost.exe
-C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\testhost.dll
 C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\appsettings.json
-C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\xunit.abstractions.dll
 C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\xunit.runner.visualstudio.testadapter.dll
 C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\appsettings.secrets.json
 C:\Users\tadeo\OneDrive\Escritorio\Facultad\SmartPantry\test\SmartPantry.TestBase\bin\Debug\net10.0\SmartPantry.TestBase.deps.json

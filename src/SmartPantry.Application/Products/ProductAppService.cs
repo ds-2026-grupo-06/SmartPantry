@@ -4,8 +4,11 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
+using Volo.Abp.DependencyInjection;
+
 namespace SmartPantry.Products;
 
+[ExposeServices(typeof(IProductAppService), typeof(ProductsAppService))]
 public class ProductsAppService :
     CrudAppService<
         Product,

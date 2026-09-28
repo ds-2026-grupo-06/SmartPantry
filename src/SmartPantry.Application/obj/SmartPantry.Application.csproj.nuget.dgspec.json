@@ -448,6 +448,10 @@
               "target": "Package",
               "version": "[10.6.0, )"
             },
+            "Volo.Abp.Mapperly": {
+              "target": "Package",
+              "version": "[10.6.0, )"
+            },
             "Volo.Abp.PermissionManagement.Application": {
               "target": "Package",
               "version": "[10.6.0, )"

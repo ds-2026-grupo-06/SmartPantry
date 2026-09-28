@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartPantry.Domain.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2bddf16427380aad64f921f1ca367eeb2388976")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f9a3c8774a75eca5c8e92a8e88e7ef4b8ca68f92")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartPantry.Domain.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartPantry.Domain.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

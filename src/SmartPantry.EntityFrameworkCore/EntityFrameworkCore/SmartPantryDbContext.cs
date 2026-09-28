@@ -82,11 +82,6 @@ public class SmartPantryDbContext :
         builder.ConfigureTenantManagement();
         builder.ConfigureBlobStoring();
 
-        builder.Entity<Product>(b =>
-        {
-            b.ToTable("Products");
-        });
-
         builder.Entity<Product>(p =>
         {
             p.ToTable(SmartPantryConsts.DbTablePrefix + "Products",
