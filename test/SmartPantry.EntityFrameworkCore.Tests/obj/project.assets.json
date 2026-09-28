@@ -4473,6 +4473,7 @@
           "Volo.Abp.Account.Application": "10.6.0",
           "Volo.Abp.FeatureManagement.Application": "10.6.0",
           "Volo.Abp.Identity.Application": "10.6.0",
+          "Volo.Abp.Mapperly": "10.6.0",
           "Volo.Abp.PermissionManagement.Application": "10.6.0",
           "Volo.Abp.SettingManagement.Application": "10.6.0",
           "Volo.Abp.TenantManagement.Application": "10.6.0"
@@ -4509,7 +4510,9 @@
         "dependencies": {
           "Microsoft.NET.Test.Sdk": "17.14.1",
           "SmartPantry.Application": "1.0.0",
-          "SmartPantry.Domain.Tests": "1.0.0"
+          "SmartPantry.Domain.Tests": "1.0.0",
+          "SmartPantry.EntityFrameworkCore": "1.0.0",
+          "Volo.Abp.EntityFrameworkCore.Sqlite": "10.6.0"
         },
         "compile": {
           "bin/placeholder/SmartPantry.Application.Tests.dll": {}
@@ -11682,24 +11685,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\brian\\.nuget\\packages\\": {},
+    "C:\\Users\\tadeo\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\brian\\OneDrive\\Documentos\\GitHub\\SmartPantry\\test\\SmartPantry.EntityFrameworkCore.Tests\\SmartPantry.EntityFrameworkCore.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\test\\SmartPantry.EntityFrameworkCore.Tests\\SmartPantry.EntityFrameworkCore.Tests.csproj",
       "projectName": "SmartPantry.EntityFrameworkCore.Tests",
-      "projectPath": "C:\\Users\\brian\\OneDrive\\Documentos\\GitHub\\SmartPantry\\test\\SmartPantry.EntityFrameworkCore.Tests\\SmartPantry.EntityFrameworkCore.Tests.csproj",
-      "packagesPath": "C:\\Users\\brian\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\brian\\OneDrive\\Documentos\\GitHub\\SmartPantry\\test\\SmartPantry.EntityFrameworkCore.Tests\\obj\\",
+      "projectPath": "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\test\\SmartPantry.EntityFrameworkCore.Tests\\SmartPantry.EntityFrameworkCore.Tests.csproj",
+      "packagesPath": "C:\\Users\\tadeo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\test\\SmartPantry.EntityFrameworkCore.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\brian\\OneDrive\\Documentos\\GitHub\\SmartPantry\\NuGet.Config",
-        "C:\\Users\\brian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\NuGet.Config",
+        "C:\\Users\\tadeo\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -11715,11 +11718,11 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\brian\\OneDrive\\Documentos\\GitHub\\SmartPantry\\src\\SmartPantry.EntityFrameworkCore\\SmartPantry.EntityFrameworkCore.csproj": {
-              "projectPath": "C:\\Users\\brian\\OneDrive\\Documentos\\GitHub\\SmartPantry\\src\\SmartPantry.EntityFrameworkCore\\SmartPantry.EntityFrameworkCore.csproj"
+            "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\src\\SmartPantry.EntityFrameworkCore\\SmartPantry.EntityFrameworkCore.csproj": {
+              "projectPath": "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\src\\SmartPantry.EntityFrameworkCore\\SmartPantry.EntityFrameworkCore.csproj"
             },
-            "C:\\Users\\brian\\OneDrive\\Documentos\\GitHub\\SmartPantry\\test\\SmartPantry.Application.Tests\\SmartPantry.Application.Tests.csproj": {
-              "projectPath": "C:\\Users\\brian\\OneDrive\\Documentos\\GitHub\\SmartPantry\\test\\SmartPantry.Application.Tests\\SmartPantry.Application.Tests.csproj"
+            "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\test\\SmartPantry.Application.Tests\\SmartPantry.Application.Tests.csproj": {
+              "projectPath": "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\test\\SmartPantry.Application.Tests\\SmartPantry.Application.Tests.csproj"
             }
           }
         }
@@ -11766,7 +11769,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

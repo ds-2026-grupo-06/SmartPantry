@@ -6,14 +6,17 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>SmartPantry</RootNamespace>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\SmartPantry.Application\SmartPantry.Application.csproj" />
+    <ProjectReference Include="..\..\src\SmartPantry.EntityFrameworkCore\SmartPantry.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\SmartPantry.Domain.Tests\SmartPantry.Domain.Tests.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="10.6.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
   </ItemGroup>
 
