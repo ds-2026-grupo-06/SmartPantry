@@ -14,5 +14,5 @@ public interface IProductAppService :
         CreateUpdateProductDto> //Used to create/update a product
 {
     //Contrado de servicio para obtener un producto por su código de barras
-    Task<ExternalProductDto> GetByBarcodeAsync(GetProductByBarcodeDto input);
+    Task<ExternalProductDto?> GetByBarcodeAsync(GetProductByBarcodeDto input);
 }

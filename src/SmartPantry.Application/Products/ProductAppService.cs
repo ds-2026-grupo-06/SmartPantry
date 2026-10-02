@@ -5,7 +5,6 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using SmartPantry.Products.Barcode;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.Domain.Entities;
 
 namespace SmartPantry.Products;
 
@@ -59,14 +58,9 @@ public class ProductsAppService :
     }
 
 
-    public async Task<ExternalProductDto> GetByBarcodeAsync(GetProductByBarcodeDto input)
+    public async Task<ExternalProductDto?> GetByBarcodeAsync(GetProductByBarcodeDto input)
     {
         var externalProduct = await _externalCatalogClient.GetByBarcodeAsync(input.Barcode);
-
-        if (externalProduct == null)
-        {
-            throw new EntityNotFoundException(typeof(ExternalProductDto), input.Barcode);
-        }
 
         return externalProduct;
     }
