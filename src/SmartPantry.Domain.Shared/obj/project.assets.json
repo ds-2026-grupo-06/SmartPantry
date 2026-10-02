@@ -3380,24 +3380,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\tadeo\\.nuget\\packages\\": {},
+    "C:\\Users\\brian\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\src\\SmartPantry.Domain.Shared\\SmartPantry.Domain.Shared.csproj",
+      "projectUniqueName": "C:\\Users\\brian\\OneDrive\\Documentos\\GitHub\\SmartPantry\\src\\SmartPantry.Domain.Shared\\SmartPantry.Domain.Shared.csproj",
       "projectName": "SmartPantry.Domain.Shared",
-      "projectPath": "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\src\\SmartPantry.Domain.Shared\\SmartPantry.Domain.Shared.csproj",
-      "packagesPath": "C:\\Users\\tadeo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\src\\SmartPantry.Domain.Shared\\obj\\",
+      "projectPath": "C:\\Users\\brian\\OneDrive\\Documentos\\GitHub\\SmartPantry\\src\\SmartPantry.Domain.Shared\\SmartPantry.Domain.Shared.csproj",
+      "packagesPath": "C:\\Users\\brian\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\brian\\OneDrive\\Documentos\\GitHub\\SmartPantry\\src\\SmartPantry.Domain.Shared\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\tadeo\\OneDrive\\Escritorio\\Facultad\\SmartPantry\\NuGet.Config",
-        "C:\\Users\\tadeo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\brian\\OneDrive\\Documentos\\GitHub\\SmartPantry\\NuGet.Config",
+        "C:\\Users\\brian\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3493,7 +3493,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
