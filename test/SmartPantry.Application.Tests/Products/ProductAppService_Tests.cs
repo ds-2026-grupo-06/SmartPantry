@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp;
 using Xunit;
 
 namespace SmartPantry.Products;
@@ -122,5 +123,39 @@ public class ProductAppService_Tests : SmartPantryApplicationTestBase<SmartPantr
 
         // Assert
         result.ShouldBeNull();
+    }
+    [Fact]
+    public async Task Limite_De_Solicitudes()
+    {
+        // Arrange: Simulamos un código de barras válido
+        var barcode = "3017620422003";
+        var input = new GetProductByBarcodeDto { Barcode = barcode };
+        // Configuramos el mock para que devuelva una excepción de límite de solicitudes
+        _externalCatalogClientMock
+            .GetByBarcodeAsync(barcode)
+            .Returns<Task<ExternalProductDto?>>(_ => throw new UserFriendlyException("Se ha superado el límite de solicitudes a Open Food Facts. Intente más tarde."));
+        // Act & Assert: Verificamos que se lance la excepción esperada
+        var exception = await Should.ThrowAsync<UserFriendlyException>(async () =>
+        {
+            await _productAppService.GetByBarcodeAsync(input);
+        });
+        exception.Message.ShouldBe("Se ha superado el límite de solicitudes a Open Food Facts. Intente más tarde.");
+    }
+    [Fact]
+    public async Task Servicio_Externo_No_Disponible()
+    {
+        // Arrange: Simulamos un código de barras válido
+        var barcode = "3017620422003";
+        var input = new GetProductByBarcodeDto { Barcode = barcode };
+        // Configuramos el mock para que devuelva una excepción de servicio no disponible
+        _externalCatalogClientMock
+            .GetByBarcodeAsync(barcode)
+            .Returns<Task<ExternalProductDto?>>(_ => throw new UserFriendlyException("El servicio externo no está disponible. Intente más tarde."));
+        // Act & Assert: Verificamos que se lance la excepción esperada
+        var exception = await Should.ThrowAsync<UserFriendlyException>(async () =>
+        {
+            await _productAppService.GetByBarcodeAsync(input);
+        });
+        exception.Message.ShouldBe("El servicio externo no está disponible. Intente más tarde.");
     }
 }

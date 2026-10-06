@@ -62,14 +62,18 @@ public class OpenFoodFactsProductCatalogClient : IExternalProductCatalogClient
                 parts.Add($"Sal: {salt} g/100g");
             nutrients = string.Join(", ", parts);
         }
+        else
+        {
+            nutrients = "No se tiene información nutricional sobre el producto";
+        }
 
         return new ExternalProductDto
         {
             Barcode = barcode,
-            Name = p.ProductName ?? string.Empty,
-            Brand = p.Brands ?? string.Empty,
-            Quantity = p.Quantity ?? string.Empty,
-            ImageUrl = p.ImageFrontUrl ?? string.Empty,
+            Name = p.ProductName ?? "No se tiene información sobre el nombre del producto",
+            Brand = p.Brands ?? "No se tiene información sobre la marca del producto",
+            Quantity = p.Quantity ?? "No se tiene información sobre la cantidad del producto",
+            ImageUrl = p.ImageFrontUrl ?? "No se tiene información sobre la imagen del producto",
             Nutrients = nutrients
         };
     }
