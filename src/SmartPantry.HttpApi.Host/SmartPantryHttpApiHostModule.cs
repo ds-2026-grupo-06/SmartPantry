@@ -12,7 +12,6 @@ using OpenIddict.Server.AspNetCore;
 using OpenIddict.Validation.AspNetCore;
 using SmartPantry.EntityFrameworkCore;
 using SmartPantry.HealthChecks;
-using SmartPantry.HttpApi.Host;
 using SmartPantry.MultiTenancy;
 using SmartPantry.Products;
 using System;
@@ -145,6 +144,12 @@ public class SmartPantryHttpApiHostModule : AbpModule
                 // User-Agent obligatorio exigido por el proveedor para identificar la aplicación
                 client.DefaultRequestHeaders.Add("User-Agent", "SmartPantry-UTN-FRCU-1.0");
             });
+
+        Configure<Volo.Abp.AspNetCore.ExceptionHandling.AbpExceptionHttpStatusCodeOptions>(options =>
+        {
+            options.Map(OpenFoodFactsProductCatalogClient.ServiceUnavailableErrorCode, System.Net.HttpStatusCode.ServiceUnavailable);
+            options.Map(OpenFoodFactsProductCatalogClient.RateLimitErrorCode, System.Net.HttpStatusCode.TooManyRequests);
+        });
     }
 
     private void ConfigureStudio(IHostEnvironment hostingEnvironment)
