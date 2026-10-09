@@ -1,5 +1,6 @@
 using NSubstitute;
 using Shouldly;
+using SmartPantry.HttpApi.Host;
 using SmartPantry.Products.Barcode;
 using System;
 using System.Threading.Tasks;
@@ -124,6 +125,41 @@ public class ProductAppService_Tests : SmartPantryApplicationTestBase<SmartPantr
         // Assert
         result.ShouldBeNull();
     }
+
+    [Fact]
+    public async Task Should_Get_Product_By_Barcode_When_Data_Is_Incomplete()
+    {
+        // Arrange: Simulamos un código de barras con datos incompletos
+        var barcode = "7790895000225";
+        var input = new GetProductByBarcodeDto { Barcode = barcode };
+
+        var fakeExternalProduct = new ExternalProductDto
+        {
+            Barcode = barcode,
+            Name = "No se tiene información sobre el nombre del producto",
+            Brand = "No se tiene información sobre la marca del producto",
+            Quantity = "No se tiene información sobre la cantidad del producto",
+            ImageUrl = "No se tiene información sobre la imagen del producto",
+            Nutrients = "No se tiene información nutricional sobre el producto"
+        };
+
+        _externalCatalogClientMock
+            .GetByBarcodeAsync(barcode)
+            .Returns(Task.FromResult<ExternalProductDto?>(fakeExternalProduct));
+
+        // Act
+        var result = await _productAppService.GetByBarcodeAsync(input);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Barcode.ShouldBe(barcode);
+        result.Name.ShouldBe("No se tiene información sobre el nombre del producto");
+        result.Brand.ShouldBe("No se tiene información sobre la marca del producto");
+        result.Quantity.ShouldBe("No se tiene información sobre la cantidad del producto");
+        result.ImageUrl.ShouldBe("No se tiene información sobre la imagen del producto");
+        result.Nutrients.ShouldBe("No se tiene información nutricional sobre el producto");
+    }
+
     [Fact]
     public async Task Limite_De_Solicitudes()
     {
