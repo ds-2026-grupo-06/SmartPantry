@@ -1,17 +1,21 @@
-using SmartPantry.Products;
-using SmartPantry.Products.Barcode;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
-using Volo.Abp;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using SmartPantry.Products.Barcode;
+using Volo.Abp;
 
-namespace SmartPantry.HttpApi.Host;
+namespace SmartPantry.Products;
 
 public class OpenFoodFactsProductCatalogClient : IExternalProductCatalogClient
 {
+    public const string RateLimitErrorCode = "SmartPantry:RateLimitExceeded";
+    public const string ServiceUnavailableErrorCode = "SmartPantry:ExternalServiceUnavailable";
+
     private readonly HttpClient _httpClient;
 
     public OpenFoodFactsProductCatalogClient(HttpClient httpClient)
@@ -23,7 +27,25 @@ public class OpenFoodFactsProductCatalogClient : IExternalProductCatalogClient
     {
         string url = $"api/v3/product/{barcode}";
 
-        var response = await _httpClient.GetAsync(url);
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.GetAsync(url);
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new UserFriendlyException(
+                "El servicio externo no está disponible. Intente más tarde.",
+                ServiceUnavailableErrorCode,
+                innerException: ex);
+        }
+        catch (TaskCanceledException ex)
+        {
+            throw new UserFriendlyException(
+                "El servicio externo no está disponible. Intente más tarde.",
+                ServiceUnavailableErrorCode,
+                innerException: ex);
+        }
 
         if (response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.BadRequest)
         {
@@ -32,7 +54,16 @@ public class OpenFoodFactsProductCatalogClient : IExternalProductCatalogClient
 
         if (response.StatusCode == (HttpStatusCode)429)
         {
-            throw new UserFriendlyException("Se ha superado el límite de solicitudes a Open Food Facts. Intente más tarde.");
+            throw new UserFriendlyException(
+                "Se ha superado el límite de solicitudes a Open Food Facts. Intente más tarde.",
+                RateLimitErrorCode);
+        }
+
+        if ((int)response.StatusCode >= 500)
+        {
+            throw new UserFriendlyException(
+                "El servicio externo no está disponible. Intente más tarde.",
+                ServiceUnavailableErrorCode);
         }
 
         response.EnsureSuccessStatusCode();
@@ -46,21 +77,22 @@ public class OpenFoodFactsProductCatalogClient : IExternalProductCatalogClient
 
         var p = externalApiResponse.Product;
 
-        string nutrients = string.Empty;
+        string nutrients;
         if (p.Nutriments != null)
         {
-            var parts = new System.Collections.Generic.List<string>();
+            var parts = new List<string>();
+            var culture = System.Globalization.CultureInfo.InvariantCulture;
             if (GetDouble(p.Nutriments, "energy-kcal_100g") is double kcal)
-                parts.Add($"Energía: {kcal} kcal/100g");
+                parts.Add($"Energía: {kcal.ToString(culture)} kcal/100g");
             if (GetDouble(p.Nutriments, "fat_100g") is double fat)
-                parts.Add($"Grasas: {fat} g/100g");
+                parts.Add($"Grasas: {fat.ToString(culture)} g/100g");
             if (GetDouble(p.Nutriments, "sugars_100g") is double sugars)
-                parts.Add($"Azúcares: {sugars} g/100g");
+                parts.Add($"Azúcares: {sugars.ToString(culture)} g/100g");
             if (GetDouble(p.Nutriments, "proteins_100g") is double proteins)
-                parts.Add($"Proteínas: {proteins} g/100g");
+                parts.Add($"Proteínas: {proteins.ToString(culture)} g/100g");
             if (GetDouble(p.Nutriments, "salt_100g") is double salt)
-                parts.Add($"Sal: {salt} g/100g");
-            nutrients = string.Join(", ", parts);
+                parts.Add($"Sal: {salt.ToString(culture)} g/100g");
+            nutrients = parts.Count > 0 ? string.Join(", ", parts) : "No se tiene información nutricional sobre el producto";
         }
         else
         {
@@ -79,7 +111,7 @@ public class OpenFoodFactsProductCatalogClient : IExternalProductCatalogClient
     }
 
     private static double? GetDouble(
-        System.Collections.Generic.Dictionary<string, JsonElement> dict,
+        Dictionary<string, JsonElement> dict,
         string key)
     {
         if (dict.TryGetValue(key, out var element) &&
@@ -119,5 +151,5 @@ internal class OpenFoodFactsProductDto
     public string? ImageFrontUrl { get; set; }
 
     [JsonPropertyName("nutriments")]
-    public System.Collections.Generic.Dictionary<string, JsonElement>? Nutriments { get; set; }
+    public Dictionary<string, JsonElement>? Nutriments { get; set; }
 }

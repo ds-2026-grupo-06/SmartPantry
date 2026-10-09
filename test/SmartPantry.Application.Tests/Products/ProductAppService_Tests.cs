@@ -133,13 +133,16 @@ public class ProductAppService_Tests : SmartPantryApplicationTestBase<SmartPantr
         // Configuramos el mock para que devuelva una excepción de límite de solicitudes
         _externalCatalogClientMock
             .GetByBarcodeAsync(barcode)
-            .Returns<Task<ExternalProductDto?>>(_ => throw new UserFriendlyException("Se ha superado el límite de solicitudes a Open Food Facts. Intente más tarde."));
+            .Returns<Task<ExternalProductDto?>>(_ => throw new UserFriendlyException(
+                "Se ha superado el límite de solicitudes a Open Food Facts. Intente más tarde.",
+                OpenFoodFactsProductCatalogClient.RateLimitErrorCode));
         // Act & Assert: Verificamos que se lance la excepción esperada
         var exception = await Should.ThrowAsync<UserFriendlyException>(async () =>
         {
             await _productAppService.GetByBarcodeAsync(input);
         });
         exception.Message.ShouldBe("Se ha superado el límite de solicitudes a Open Food Facts. Intente más tarde.");
+        exception.Code.ShouldBe(OpenFoodFactsProductCatalogClient.RateLimitErrorCode);
     }
     [Fact]
     public async Task Servicio_Externo_No_Disponible()
@@ -150,12 +153,15 @@ public class ProductAppService_Tests : SmartPantryApplicationTestBase<SmartPantr
         // Configuramos el mock para que devuelva una excepción de servicio no disponible
         _externalCatalogClientMock
             .GetByBarcodeAsync(barcode)
-            .Returns<Task<ExternalProductDto?>>(_ => throw new UserFriendlyException("El servicio externo no está disponible. Intente más tarde."));
+            .Returns<Task<ExternalProductDto?>>(_ => throw new UserFriendlyException(
+                "El servicio externo no está disponible. Intente más tarde.",
+                OpenFoodFactsProductCatalogClient.ServiceUnavailableErrorCode));
         // Act & Assert: Verificamos que se lance la excepción esperada
         var exception = await Should.ThrowAsync<UserFriendlyException>(async () =>
         {
             await _productAppService.GetByBarcodeAsync(input);
         });
         exception.Message.ShouldBe("El servicio externo no está disponible. Intente más tarde.");
+        exception.Code.ShouldBe(OpenFoodFactsProductCatalogClient.ServiceUnavailableErrorCode);
     }
 }
