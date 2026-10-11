@@ -42,19 +42,26 @@ obj/x86/
 [Aa][Rr][Mm]64/
 [Aa][Rr][Mm]64[Ee][Cc]/
 bld/
+[Bb]in/
 [Oo]bj/
+bin/
+obj/
 [Oo]ut/
 [Ll]og/
 [Ll]ogs/
 
-# Build results on 'Bin' directories
-**/[Bb]in/*
+# Build results on 'Bin' and 'Obj' directories
+**/[Bb]in/
+**/[Oo]bj/
+**/bin/**
+**/obj/**
 
 # Uncomment if you have tasks that rely on *.refresh files
 #!**/[Bb]in/*.refresh
 
 # Visual Studio cache/options directory
 .vs/
+**/.vs/
 
 # Uncomment if you have tasks that create project's static files in wwwroot
 #wwwroot/
@@ -96,6 +103,8 @@ ScaffoldingReadMe.txt
 StyleCopReport.xml
 
 # Files built by Visual Studio
+*.dll
+*.exe
 *_i.c
 *_p.c
 *_h.h
@@ -230,6 +239,8 @@ PublishScripts/
 # NuGet v3
 *.nuget.props
 *.nuget.targets
+project.assets.json
+project.nuget.cache
 
 # Microsoft Azure Build Output
 csx/
@@ -251,6 +262,9 @@ _pkginfo.txt
 # Cache files
 *.[Cc]ache
 !?*.[Cc]ache/
+*.cachefile
+*.FileListAbsolute.txt
+*.Up2Date
 
 # Others
 ClientBin/

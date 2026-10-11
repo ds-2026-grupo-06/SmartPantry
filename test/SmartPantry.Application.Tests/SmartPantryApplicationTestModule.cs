@@ -1,7 +1,9 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using SmartPantry.EntityFrameworkCore;
+using SmartPantry.Products;
 using Volo.Abp;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
@@ -45,6 +47,11 @@ public class SmartPantryApplicationTestModule : AbpModule
         context.Services.AddAlwaysDisableUnitOfWorkTransaction();
 
         ConfigureInMemorySqlite(context.Services);
+
+        // Registramos un Mock de IExternalProductCatalogClient para que las pruebas no salgan a Internet
+        // Consulta de productos por código de barras, simulando la interacción con un cliente externo.
+        var externalCatalogClientMock = Substitute.For<IExternalProductCatalogClient>();
+        context.Services.AddSingleton(externalCatalogClientMock);
     }
 
     private void ConfigureInMemorySqlite(IServiceCollection services)

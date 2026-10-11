@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
-
+using SmartPantry.Products.Barcode;
 using Volo.Abp.DependencyInjection;
 
 namespace SmartPantry.Products;
@@ -19,11 +19,15 @@ public class ProductsAppService :
     IProductAppService
 {
     private readonly IRepository<Product, Guid> _repository;
+    private readonly IExternalProductCatalogClient _externalCatalogClient; 
 
-    public ProductsAppService(IRepository<Product, Guid> repository)
+    public ProductsAppService(
+        IRepository<Product, Guid> repository,
+        IExternalProductCatalogClient externalCatalogClient) 
         : base(repository)
     {
         _repository = repository;
+        _externalCatalogClient = externalCatalogClient;
     }
 
     public override async Task<ProductDto> CreateAsync(CreateUpdateProductDto input)
@@ -44,16 +48,20 @@ public class ProductsAppService :
 
     public override async Task<ProductDto> UpdateAsync(Guid id, CreateUpdateProductDto input)
     {
-        // 1. Buscamos la entidad en la base de datos
         var product = await _repository.GetAsync(id);
 
-        // 2. Ejecutamos el método del dominio (valida y normaliza)
         product.UpdateDetails(input.Name, input.Brand, input.NutriScore, input.NovaGroup);
 
-        // 3. Persistimos los cambios
         await _repository.UpdateAsync(product);
 
-        // 4. Retornamos el DTO
         return ObjectMapper.Map<Product, ProductDto>(product);
+    }
+
+
+    public async Task<ExternalProductDto?> GetByBarcodeAsync(GetProductByBarcodeDto input)
+    {
+        var externalProduct = await _externalCatalogClient.GetByBarcodeAsync(input.Barcode);
+
+        return externalProduct;
     }
 }
