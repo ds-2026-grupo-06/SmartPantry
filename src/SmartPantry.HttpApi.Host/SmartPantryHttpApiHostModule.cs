@@ -12,6 +12,7 @@ using OpenIddict.Server.AspNetCore;
 using OpenIddict.Validation.AspNetCore;
 using SmartPantry.EntityFrameworkCore;
 using SmartPantry.HealthChecks;
+using SmartPantry.HttpApi.Host;
 using SmartPantry.MultiTenancy;
 using SmartPantry.Products;
 using System;

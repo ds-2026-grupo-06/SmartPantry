@@ -6,10 +6,11 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using SmartPantry.Products;
 using SmartPantry.Products.Barcode;
 using Volo.Abp;
 
-namespace SmartPantry.Products;
+namespace SmartPantry.HttpApi.Host;
 
 public class OpenFoodFactsProductCatalogClient : IExternalProductCatalogClient
 {

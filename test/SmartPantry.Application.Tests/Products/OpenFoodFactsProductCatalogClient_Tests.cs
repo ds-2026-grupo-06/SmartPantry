@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Shouldly;
+using SmartPantry.HttpApi.Host;
 using SmartPantry.Products.Barcode;
 using Volo.Abp;
 using Xunit;
