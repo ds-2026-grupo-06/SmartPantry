@@ -1,10 +1,8 @@
 name: CI
-
 on:
   pull_request:
     branches: [main, stg, prod]
   push:
-
     branches: [main, stg, prod]
 jobs:
   backend:
@@ -40,4 +38,3 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn build
       - run: yarn test --watch=false
-
