@@ -159,6 +159,9 @@ ipch/
 *.vspx
 *.sap
 
+# Visual Studio Trace Files
+*.e2e
+
 # TFS 2012 Local Workspace
 $tf/
 
@@ -170,6 +173,17 @@ _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
 
+# TeamCity is a build add-in
+_TeamCity*
+
+# DotCover is a Code Coverage Tool
+*.dotCover
+
+# AxoCover is a Code Coverage Tool
+.axoCover/*
+!.axoCover/settings.json
+
+# Coverlet is a free, cross platform Code Coverage Tool
 # JustCode
 .JustCode
 
@@ -316,6 +330,11 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 
+# Visual Studio 6 technical files
+*.ncb
+*.aps
+
+# Visual Studio LightSwitch build output
 # Visual Studio 6
 *.plg
 *.opt
