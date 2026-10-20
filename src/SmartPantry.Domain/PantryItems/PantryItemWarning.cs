@@ -6,11 +6,14 @@ namespace SmartPantry.PantryItems;
 public class PantryItemWarning : AuditedAggregateRoot<Guid>
 {
     public Guid PantryItemId { get; set; }
-    public string TipoAviso { get; set; } // Ej: "ExpiringSoon" o "Expired"
-    public string Mensaje { get; set; }
+    public string TipoAviso { get; set; } = string.Empty; // Clave lógica por tipo de advertencia (ej: "AvisoVencimiento")
+    public string Mensaje { get; set; } = string.Empty;
     public bool EstaActivo { get; set; }
     public DateTime FechaVencimiento { get; set; }
 
+    protected PantryItemWarning()
+    {
+    }
 
     public PantryItemWarning(Guid id, Guid pantryItemId, string tipoAviso, string mensaje, DateTime fechaVencimiento)
         : base(id)

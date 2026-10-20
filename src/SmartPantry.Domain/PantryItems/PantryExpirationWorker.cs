@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -39,8 +39,8 @@ public class PantryExpirationWorker : AsyncPeriodicBackgroundWorkerBase
                 // 2. Delimitar una Unidad de Trabajo explícita para las operaciones de escritura
                 using (var uow = unitOfWorkManager.Begin(requiresNew: true, isTransactional: true))
                 {
-                    // Ejecutar la regla de negocio pasando la fecha actual
-                    await expirationManager.ProcesarVencimiento(DateTime.Now);
+                    // Ejecutar la regla de negocio pasando la fecha local actual (criterio: Fecha Local)
+                    await expirationManager.ProcesarVencimiento(DateTime.Now.Date);
 
                     await uow.CompleteAsync();
                 }

@@ -1,18 +1,23 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Guids;
 
 namespace SmartPantry.PantryItems;
 
 public class PantryDataSeedContributor : IDataSeedContributor, ITransientDependency
 {
     private readonly IRepository<PantryItem, Guid> _pantryItemRepository;
+    private readonly IGuidGenerator _guidGenerator;
 
-    public PantryDataSeedContributor(IRepository<PantryItem, Guid> pantryItemRepository)
+    public PantryDataSeedContributor(
+        IRepository<PantryItem, Guid> pantryItemRepository,
+        IGuidGenerator guidGenerator)
     {
         _pantryItemRepository = pantryItemRepository;
+        _guidGenerator = guidGenerator;
     }
 
     public async Task SeedAsync(DataSeedContext context)
@@ -23,45 +28,64 @@ public class PantryDataSeedContributor : IDataSeedContributor, ITransientDepende
             return;
         }
 
-        // Usamos un ID de propietario fijo para simular los datos iniciales
-        var sampleOwnerId = Guid.NewGuid();
+        // Usamos un ID de propietario fijo persistido (sin depender de ICurrentUser)
+        var sampleOwnerId = Guid.Parse("11111111-1111-1111-1111-111111111111");
+        // Criterio de fecha: Fecha Local truncada al día (.Date)
         var today = DateTime.Now.Date;
 
-        // 2. Insertar los casos de prueba requeridos por el TP
-        // Ítem próximo a vencer (dentro del umbral de 3 días, ej: en 2 días)
+        // 2. Insertar los casos de ejemplo locales requeridos por el TP
+        // Caso 1: Ítem dentro del umbral (vence en 2 días)
         await _pantryItemRepository.InsertAsync(new PantryItem(
-            Guid.NewGuid(),
+            _guidGenerator.Create(),
             sampleOwnerId,
             "Leche Descremada",
             EstadoPantryItem.Disponible,
             today.AddDays(2)
-        ));
+        ), autoSave: true);
 
-        // Ítem vencido (ej: venció hace 3 días)
+        // Caso 2: Ítem en el día límite exacto del umbral (vence en 3 días)
         await _pantryItemRepository.InsertAsync(new PantryItem(
-            Guid.NewGuid(),
+            _guidGenerator.Create(),
+            sampleOwnerId,
+            "Queso Crema",
+            EstadoPantryItem.Disponible,
+            today.AddDays(PantryExpirationManager.UmbralDias)
+        ), autoSave: true);
+
+        // Caso 3: Ítem fuera del umbral (vence en 10 días)
+        await _pantryItemRepository.InsertAsync(new PantryItem(
+            _guidGenerator.Create(),
+            sampleOwnerId,
+            "Arroz Largo Fino",
+            EstadoPantryItem.Disponible,
+            today.AddDays(10)
+        ), autoSave: true);
+
+        // Caso 4: Ítem vencido (venció hace 3 días)
+        await _pantryItemRepository.InsertAsync(new PantryItem(
+            _guidGenerator.Create(),
             sampleOwnerId,
             "Yogur Natural",
             EstadoPantryItem.Disponible,
             today.AddDays(-3)
-        ));
+        ), autoSave: true);
 
-        // Ítem sin fecha de vencimiento
+        // Caso 5: Ítem sin fecha de vencimiento
         await _pantryItemRepository.InsertAsync(new PantryItem(
-            Guid.NewGuid(),
+            _guidGenerator.Create(),
             sampleOwnerId,
             "Sal Fina",
             EstadoPantryItem.Disponible,
             null
-        ));
+        ), autoSave: true);
 
-        // Ítem ya consumido (con fecha en rango de alerta pero estado consumido)
+        // Caso 6: Ítem ya consumido (con fecha en rango de alerta pero estado Consumido)
         await _pantryItemRepository.InsertAsync(new PantryItem(
-            Guid.NewGuid(),
+            _guidGenerator.Create(),
             sampleOwnerId,
             "Galletitas de Avena",
             EstadoPantryItem.Consumido,
             today.AddDays(1)
-        ));
+        ), autoSave: true);
     }
 }

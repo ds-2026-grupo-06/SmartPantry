@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace SmartPantry.PantryItems;
@@ -6,11 +6,15 @@ namespace SmartPantry.PantryItems;
 public class PantryItem : AuditedAggregateRoot<Guid>
 {
     public Guid IdPropietario { get; set; }
-    public string NombreProducto { get; set; }
+    public string NombreProducto { get; set; } = string.Empty;
     public EstadoPantryItem Estado { get; set; }
     public DateTime? FechaVencimiento { get; set; }
 
-    public PantryItem(Guid id,Guid idPropietario, string nombreProducto, EstadoPantryItem estado, DateTime? fechaVencimiento = null)
+    protected PantryItem()
+    {
+    }
+
+    public PantryItem(Guid id, Guid idPropietario, string nombreProducto, EstadoPantryItem estado, DateTime? fechaVencimiento = null)
         : base(id)
     {
         IdPropietario = idPropietario;

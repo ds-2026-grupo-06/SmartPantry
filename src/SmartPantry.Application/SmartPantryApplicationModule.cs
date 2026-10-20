@@ -23,18 +23,17 @@ namespace SmartPantry;
     typeof(AbpAccountApplicationModule),
     typeof(AbpTenantManagementApplicationModule),
     typeof(AbpSettingManagementApplicationModule),
+    typeof(AbpBackgroundWorkersModule),
     typeof(AbpMapperlyModule)
     )]
 public class SmartPantryApplicationModule : AbpModule
 {
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
-        // Registrar y encender el worker de vencimientos al iniciar la aplicación
+        // Registrar el worker de vencimientos al iniciar la aplicación (respeta AbpBackgroundWorkerOptions.IsEnabled en pruebas)
         AsyncHelper.RunSync(async () =>
         {
-            await context.ServiceProvider
-                .GetRequiredService<IBackgroundWorkerManager>()
-                .AddAsync(context.ServiceProvider.GetRequiredService<PantryExpirationWorker>());
+            await context.AddBackgroundWorkerAsync<PantryExpirationWorker>();
         });
     }
 }
