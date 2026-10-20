@@ -15,6 +15,7 @@ using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using SmartPantry.Products;
+using SmartPantry.PantryItems;
 
 namespace SmartPantry.EntityFrameworkCore;
 
@@ -30,6 +31,8 @@ public class SmartPantryDbContext :
 
 
     public DbSet<Product> Products { get; set; }
+    public DbSet<PantryItem> PantryItems { get; set; }
+    public DbSet<PantryItemWarning> PantryItemWarnings { get; set; }
 
     #region Entities from the modules
 
@@ -95,6 +98,25 @@ public class SmartPantryDbContext :
 
         });
 
+        builder.Entity<PantryItem>(p =>
+        {
+            p.ToTable(SmartPantryConsts.DbTablePrefix + "PantryItems",
+                SmartPantryConsts.DbSchema);
+            p.ConfigureByConvention(); //auto configure for the base class props
+            p.Property(x => x.NombreProducto).IsRequired().HasMaxLength(128);
+            p.Property(x => x.IdPropietario).IsRequired();
+            p.Property(x => x.Estado).IsRequired();
+            p.Property(x => x.FechaVencimiento).IsRequired(false);
+        });
+
+        builder.Entity<PantryItemWarning>(p =>
+        {
+            p.ToTable(SmartPantryConsts.DbTablePrefix + "PantryItemWarnings", SmartPantryConsts.DbSchema);
+            p.ConfigureByConvention();
+            p.Property(x => x.TipoAviso).IsRequired().HasMaxLength(64);
+            p.Property(x => x.Mensaje).IsRequired().HasMaxLength(256);
+            p.HasIndex(x => new { x.PantryItemId, x.TipoAviso }).IsUnique();
+        });
 
         /* Configure your own tables/entities inside here */
 
