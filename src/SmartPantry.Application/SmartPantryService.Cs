@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using SmartPantry.Products;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SmartPantry;
 
+[Authorize]
 public class SmartPantryService : ApplicationService//, ISmartPantryService
 {
     private readonly IRepository<Product, Guid> _productRepository;
