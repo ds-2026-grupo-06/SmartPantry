@@ -5,10 +5,12 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using SmartPantry.Products.Barcode;
 using Volo.Abp.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SmartPantry.Products;
 
 [ExposeServices(typeof(IProductAppService), typeof(ProductsAppService))]
+[Authorize]
 public class ProductsAppService :
     CrudAppService<
         Product,
