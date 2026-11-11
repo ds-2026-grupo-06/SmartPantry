@@ -32,4 +32,9 @@ export const APP_ROUTES: Routes = [
     loadComponent: () => import('./author/author.component').then(c => c.AuthorComponent),
     canActivate: [authGuard, permissionGuard],
   },
+  {
+    path: 'pantry',
+    loadComponent: () => import('./pantry/pantry.component').then(m => m.PantryComponent),
+    canActivate: [authGuard] // Esto redirige al login si no hay sesión
+  },
 ];

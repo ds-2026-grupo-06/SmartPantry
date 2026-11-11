@@ -29,5 +29,12 @@ function configureRoutes() {
         layout: eLayoutType.application,
         requiredPolicy: 'SmartPantry.Authors',
       },
+      {
+        path: '/pantry',
+        name: '::Menu:MyPantry', // Clave que se usará para la traducción
+        iconClass: 'fas fa-box', // Ícono de FontAwesome
+        order: 2,
+        layout: eLayoutType.application,
+      },
   ]);
 }
