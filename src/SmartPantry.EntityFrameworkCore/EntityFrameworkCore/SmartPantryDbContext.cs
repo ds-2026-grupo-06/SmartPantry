@@ -107,6 +107,8 @@ public class SmartPantryDbContext :
             p.Property(x => x.IdPropietario).IsRequired();
             p.Property(x => x.Estado).IsRequired();
             p.Property(x => x.FechaVencimiento).IsRequired(false);
+            p.Property(x => x.Cantidad).IsRequired(false);
+            p.Property(x => x.Unidad).IsRequired(false);
         });
 
         builder.Entity<PantryItemWarning>(p =>
