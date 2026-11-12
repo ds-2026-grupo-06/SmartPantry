@@ -12,12 +12,12 @@ public class PantryItem : AuditedAggregateRoot<Guid>
     public int? Cantidad { get; set; }
     public String? Unidad { get; set; }
 
-    protected PantryItem()
+    public PantryItem()
     {
     }
 
     public PantryItem(Guid id, Guid idPropietario, string nombreProducto, EstadoPantryItem estado, 
-        DateTime? fechaVencimiento = null, int cantidad = 0, string unidad = "")
+        DateTime? fechaVencimiento = null, int? cantidad = null, string? unidad = null)
         : base(id)
     {
         IdPropietario = idPropietario;
@@ -37,11 +37,11 @@ public class PantryItem : AuditedAggregateRoot<Guid>
     {
         FechaVencimiento = fechaVencimiento;
     }
-    public void ActualizarCantidad(int cantidad)
+    public void ActualizarCantidad(int? cantidad)
     {
         Cantidad = cantidad;
     }
-    public void ActualizarUnidad(string unidad)
+    public void ActualizarUnidad(string? unidad)
     {
         Unidad = unidad;
     }
