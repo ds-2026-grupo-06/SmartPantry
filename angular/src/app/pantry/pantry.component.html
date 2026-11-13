@@ -1,0 +1,58 @@
+<div class="container mt-4">
+  <h2>{{ '::Menu:MyPantry' | abpLocalization }}</h2>
+
+  <!-- 1. CARGA (Controlado automáticamente por ABP) -->
+  <div *ngIf="list.isLoading$ | async" class="alert alert-info">
+    {{ '::Pantry:Loading' | abpLocalization }}
+  </div>
+
+  <!-- 2. ERROR -->
+  <div *ngIf="hasError && !(list.isLoading$ | async)" class="alert alert-danger d-flex justify-content-between align-items-center">
+    <span>{{ '::Pantry:Error' | abpLocalization }}</span>
+    <button class="btn btn-outline-danger btn-sm" (click)="reintentar()">
+      Reintentar
+    </button>
+  </div>
+
+  <!-- 3. LISTA VACÍA -->
+  <div *ngIf="!(list.isLoading$ | async) && !hasError && items.items && items.items.length === 0" class="alert alert-warning">
+    {{ '::Pantry:Empty' | abpLocalization }}
+  </div>
+
+  <!-- 4. RESULTADOS -->
+  <div *ngIf="!(list.isLoading$ | async) && !hasError && items.items && items.items.length > 0" class="row mt-3">
+
+    <div class="col-12 col-md-6 col-lg-4 mb-3" *ngFor="let item of items.items">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-primary">{{ item.nombreProducto }}</h5>
+
+          <p class="card-text mb-1">
+            <strong>Vencimiento:</strong>
+            {{ item.fechaVencimiento | date:'shortDate' }}
+          </p>
+
+          <p class="card-text mb-1">
+            <strong>Cantidad:</strong>
+            <ng-container *ngIf="item.cantidad !== null && item.cantidad !== undefined; else sinDato">
+              {{ item.cantidad }}
+            </ng-container>
+          </p>
+
+          <p class="card-text mb-1">
+            <strong>Unidad:</strong>
+            <ng-container *ngIf="item.unidad; else sinDato">
+              {{ item.unidad }}
+            </ng-container>
+          </p>
+
+          <ng-template #sinDato>
+            <span class="text-muted fst-italic">{{ '::Pantry:MissingData' | abpLocalization }}</span>
+          </ng-template>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
