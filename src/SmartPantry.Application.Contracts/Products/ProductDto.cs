@@ -5,9 +5,10 @@ namespace SmartPantry.Products;
 
 public class ProductDto : AuditedEntityDto<Guid>
 {
-    public string Barcode { get; set; }
-    public string Name { get; set; }
-    public string Brand { get; set; }
-    public string NutriScore { get; set; }
-    public int NovaGroup { get; set; }
+    public Guid Id { get; set; }
+    public string Barcode { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Brand { get; set; } = string.Empty;
+    public string NutriScore { get; set; } = string.Empty;
+    public int NovaGroup { get; set; } = 0;
 }
