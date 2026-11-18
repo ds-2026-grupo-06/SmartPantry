@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>Formulario Reactivo</h2>
+<mat-dialog-content>
+  <form [formGroup]="miFormulario">
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Cantidad</mat-label>
+      <input matInput type="number" formControlName="cantidad">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Unidad</mat-label>
+      <input matInput formControlName="unidad">
+    </mat-form-field>
+
+    <!-- Cambiamos a type="date" para que el navegador maneje bien la fecha -->
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Fecha de Vencimiento</mat-label>
+      <input matInput type="date" formControlName="fechaven">
+    </mat-form-field>
+
+    <div class="mb-3">
+      <label>
+        <input type="checkbox" formControlName="esConsumido" />
+        Consumido
+      </label>
+    </div>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <!-- El botón se habilitará automáticamente en cuanto el formulario sea válido -->
+  <button mat-raised-button color="primary" [disabled]="miFormulario.invalid" (click)="guardar()">
+    Guardar
+  </button>
+</mat-dialog-actions>

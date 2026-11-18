@@ -449,7 +449,7 @@
   optionalDependencies:
     lmdb "3.5.4"
 
-"@angular/cdk@^21.0.0":
+"@angular/cdk@^21.0.0", "@angular/cdk@^21.2.14":
   version "21.2.14"
   resolved "https://registry.npmjs.org/@angular/cdk/-/cdk-21.2.14.tgz#26872a5b2ad5ced498f7e1c1e5a3180bf8026a45"
   integrity sha512-806REq/CLf37nEhmmd8Q+ILN8z/RVG2vk2n8YZ/4TdHpcBCi5ux4AxLbpMmduLwGPOzPagJ6ggRzE5fnX0rmcQ==
@@ -539,6 +539,13 @@
     "@types/babel__core" "7.20.5"
     tinyglobby "^0.2.12"
     yargs "^18.0.0"
+
+"@angular/material@^21.2.14":
+  version "21.2.14"
+  resolved "https://registry.npmjs.org/@angular/material/-/material-21.2.14.tgz#66c17f1a1ae2d0671eb5f5924f5bbc75b936a698"
+  integrity sha512-fMQca8VRtei93JRRG9qQ+u08DCb0nga59Esoakq5yx3+A1NfdpFeUS1tBns56U04o8KAaIAwZK3NBqXz8ZKNqg==
+  dependencies:
+    tslib "^2.3.0"
 
 "@angular/platform-browser-dynamic@~22.0.2":
   version "22.0.8"
