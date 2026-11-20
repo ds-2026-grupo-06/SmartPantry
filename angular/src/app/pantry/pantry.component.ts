@@ -1,13 +1,24 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CoreModule, ListService, PagedResultDto } from '@abp/ng.core';
-import { ConfirmationService, Confirmation } from '@abp/ng.theme.shared'; // <-- 1. Importamos el servicio de confirmación
+import { CoreModule, ListService, LocalizationPipe } from '@abp/ng.core';
+import { ConfirmationService, Confirmation } from '@abp/ng.theme.shared';
 import { PantryItemService, PantryItemDto, CreateUpdatePantryItemDto } from '@proxy/pantry-items';
-import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+
+export function fechaValidaValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  if (!value || typeof value !== 'string') {
+    return { invalidDate: true };
+  }
+  const timestamp = Date.parse(value);
+  if (isNaN(timestamp)) {
+    return { invalidDate: true };
+  }
+  return null;
+}
 
 @Component({
   selector: 'app-pantry',
@@ -26,7 +37,7 @@ export class PantryComponent implements OnInit {
     public readonly list: ListService,
     private pantryService: PantryItemService,
     private dialog: MatDialog,
-    private confirmation: ConfirmationService // <-- 2. Inyectamos el ConfirmationService
+    private confirmation: ConfirmationService
   ) { }
 
   ngOnInit() {
@@ -50,26 +61,39 @@ export class PantryComponent implements OnInit {
     this.list.get();
   }
 
-  // 3. Método de eliminación con confirmación previa de ABP
   eliminar(item: PantryItemDto): void {
-    this.confirmation.warn('¿Estás seguro de eliminar este ítem?', 'Confirmar eliminación').subscribe((status) => {
-      // Si el usuario hace clic en "Confirmar" (status.valueOf() === Confirmation.Status.confirm)
-      if (status === Confirmation.Status.confirm && item.id) {
-        this.pantryService.delete(item.id).subscribe(() => {
-          this.list.get(); // Refresca las listas tras borrar
-        });
-      }
-    });
+    this.confirmation
+      .warn('::Pantry:DeleteConfirmMessage', '::Pantry:DeleteConfirmTitle')
+      .subscribe((status) => {
+        if (status === Confirmation.Status.confirm && item.id) {
+          this.pantryService.delete(item.id).subscribe(() => {
+            this.list.get();
+          });
+        }
+      });
   }
 
   abrirModal(item: PantryItemDto): void {
     const dialogRef = this.dialog.open(MiModalComponent, {
       width: '400px',
-      data: { cantidad: item.cantidad, unidad: item.unidad, fechaven: item.fechaVencimiento, estado: item.estado }
+      data: {
+        item,
+        cantidad: item.cantidad,
+        unidad: item.unidad,
+        fechaven: item.fechaVencimiento,
+        estado: item.estado
+      }
     });
 
-    dialogRef.afterClosed().subscribe(resultado => {
-      if (resultado && item.id) {
+    dialogRef.afterClosed().subscribe((resultado: any) => {
+      if (!resultado) {
+        return;
+      }
+      if (resultado.updated) {
+        this.list.get();
+        return;
+      }
+      if (item.id) {
         let fechaFormateada = resultado.fechaven;
         if (fechaFormateada) {
           fechaFormateada = new Date(resultado.fechaven).toISOString();
@@ -84,7 +108,7 @@ export class PantryComponent implements OnInit {
           estado: nuevoEstado
         };
 
-        this.pantryService.update(item.id!, datosActualizados).subscribe(() => {
+        this.pantryService.update(item.id, datosActualizados).subscribe(() => {
           this.list.get();
         });
       }
@@ -95,16 +119,19 @@ export class PantryComponent implements OnInit {
 @Component({
   selector: 'app-mi-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatInputModule, MatButtonModule],
+  imports: [CommonModule, LocalizationPipe, ReactiveFormsModule, MatDialogModule, MatInputModule, MatButtonModule],
   templateUrl: './editpantry.component.html'
 })
 export class MiModalComponent implements OnInit {
   miFormulario!: FormGroup;
+  isSaving = false;
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<MiModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Optional() private pantryService?: PantryItemService
   ) { }
 
   ngOnInit(): void {
@@ -114,18 +141,47 @@ export class MiModalComponent implements OnInit {
     }
     const yaEstaConsumido = this.data?.estado === 1;
     this.miFormulario = this.fb.group({
-      cantidad: [this.data?.cantidad || '', [Validators.required, Validators.min(1)]],
-      unidad: [this.data?.unidad || '', [Validators.required, Validators.minLength(1)]],
-      fechaven: [fechaFormateada, [Validators.required]],
+      cantidad: [this.data?.cantidad ?? '', [Validators.required, Validators.min(0)]],
+      unidad: [this.data?.unidad ?? '', [Validators.required, Validators.minLength(1), Validators.maxLength(32)]],
+      fechaven: [fechaFormateada, [Validators.required, fechaValidaValidator]],
       esConsumido: [yaEstaConsumido]
     });
   }
 
   guardar(): void {
-    if (this.miFormulario.valid) {
-      this.dialogRef.close(this.miFormulario.value);
-    } else {
+    if (this.miFormulario.invalid || this.isSaving) {
       this.miFormulario.markAllAsTouched();
+      return;
+    }
+
+    const item: PantryItemDto | undefined = this.data?.item;
+    if (item?.id && this.pantryService) {
+      this.isSaving = true;
+      this.errorMessage = '';
+
+      const formVal = this.miFormulario.value;
+      const fechaFormateada = formVal.fechaven ? new Date(formVal.fechaven).toISOString() : null;
+      const datosActualizados: CreateUpdatePantryItemDto = {
+        idPropietario: item.idPropietario!,
+        nombreProducto: item.nombreProducto!,
+        cantidad: formVal.cantidad,
+        unidad: formVal.unidad,
+        fechaVencimiento: fechaFormateada,
+        estado: formVal.esConsumido ? 1 : 0
+      };
+
+      this.pantryService.update(item.id, datosActualizados, { skipHandleError: true }).subscribe({
+        next: () => {
+          this.isSaving = false;
+          this.dialogRef.close({ updated: true });
+        },
+        error: () => {
+          this.isSaving = false;
+          this.errorMessage = '::Pantry:UpdateError';
+        }
+      });
+    } else {
+      this.dialogRef.close(this.miFormulario.value);
     }
   }
 

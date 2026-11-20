@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <h1>{{ '::Menu:MyPantry' | abpLocalization }}</h1>
-  <h2 align="center">Items disponibles</h2>
+  <h2 align="center">{{ '::Pantry:AvailableItems' | abpLocalization }}</h2>
 
   <!-- 1. CARGA -->
   <div *ngIf="list.isLoading$ | async" class="alert alert-info">
@@ -10,7 +10,9 @@
   <!-- 2. ERROR -->
   <div *ngIf="hasError && !(list.isLoading$ | async)" class="alert alert-danger d-flex justify-content-between align-items-center">
     <span>{{ '::Pantry:Error' | abpLocalization }}</span>
-    <button class="btn btn-outline-danger btn-sm" (click)="reintentar()">Reintentar</button>
+    <button class="btn btn-outline-danger btn-sm" (click)="reintentar()">
+      {{ '::Pantry:Retry' | abpLocalization }}
+    </button>
   </div>
 
   <!-- 3. LISTA VACÍA -->
@@ -26,12 +28,17 @@
           <h5 class="card-title text-primary">{{ item.nombreProducto }}</h5>
 
           <p class="card-text mb-1">
-            <strong>Vencimiento:</strong>
-            {{ item.fechaVencimiento | date:'shortDate' }}
+            <strong>{{ '::Pantry:ExpirationDate' | abpLocalization }}:</strong>
+            <ng-container *ngIf="item.fechaVencimiento; else sinVencimiento">
+              {{ item.fechaVencimiento | date:'shortDate' }}
+            </ng-container>
           </p>
+          <ng-template #sinVencimiento>
+            <span class="text-muted fst-italic">{{ '::Pantry:MissingData' | abpLocalization }}</span>
+          </ng-template>
 
           <p class="card-text mb-1">
-            <strong>Cantidad:</strong>
+            <strong>{{ '::Pantry:Quantity' | abpLocalization }}:</strong>
             <ng-container *ngIf="item.cantidad !== null && item.cantidad !== undefined; else sinCantidad">
               {{ item.cantidad }}
             </ng-container>
@@ -41,7 +48,7 @@
           </ng-template>
 
           <p class="card-text mb-1">
-            <strong>Unidad:</strong>
+            <strong>{{ '::Pantry:Unit' | abpLocalization }}:</strong>
             <ng-container *ngIf="item.unidad; else sinUnidad">
               {{ item.unidad }}
             </ng-container>
@@ -51,15 +58,19 @@
           </ng-template>
 
           <div class="mt-2">
-            <button class="btn btn-sm btn-primary me-2" (click)="abrirModal(item)">Editar</button>
-            <button class="btn btn-sm btn-danger" (click)="eliminar(item)">Eliminar</button>
+            <button class="btn btn-sm btn-primary me-2" (click)="abrirModal(item)">
+              {{ '::Pantry:Edit' | abpLocalization }}
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="eliminar(item)">
+              {{ '::Pantry:Delete' | abpLocalization }}
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <h2 align="center" class="mt-5">Items consumidos (historial)</h2>
+  <h2 align="center" class="mt-5">{{ '::Pantry:ConsumedItems' | abpLocalization }}</h2>
 
   <!-- 1. CARGA CONSUMIDOS -->
   <div *ngIf="list.isLoading$ | async" class="alert alert-info">
@@ -69,12 +80,14 @@
   <!-- 2. ERROR CONSUMIDOS -->
   <div *ngIf="hasError && !(list.isLoading$ | async)" class="alert alert-danger d-flex justify-content-between align-items-center">
     <span>{{ '::Pantry:Error' | abpLocalization }}</span>
-    <button class="btn btn-outline-danger btn-sm" (click)="reintentar()">Reintentar</button>
+    <button class="btn btn-outline-danger btn-sm" (click)="reintentar()">
+      {{ '::Pantry:Retry' | abpLocalization }}
+    </button>
   </div>
 
   <!-- 3. LISTA VACÍA CONSUMIDOS -->
   <div *ngIf="!(list.isLoading$ | async) && !hasError && itemsConsumidos.length === 0" class="alert alert-warning">
-    {{ '::Pantry:Empty' | abpLocalization }}
+    {{ '::Pantry:EmptyConsumed' | abpLocalization }}
   </div>
 
   <!-- 4. RESULTADOS CONSUMIDOS -->
@@ -85,12 +98,17 @@
           <h5 class="card-title text-primary">{{ itemConsumido.nombreProducto }}</h5>
 
           <p class="card-text mb-1">
-            <strong>Vencimiento:</strong>
-            {{ itemConsumido.fechaVencimiento | date:'shortDate' }}
+            <strong>{{ '::Pantry:ExpirationDate' | abpLocalization }}:</strong>
+            <ng-container *ngIf="itemConsumido.fechaVencimiento; else sinVencimientoConsumido">
+              {{ itemConsumido.fechaVencimiento | date:'shortDate' }}
+            </ng-container>
           </p>
+          <ng-template #sinVencimientoConsumido>
+            <span class="text-muted fst-italic">{{ '::Pantry:MissingData' | abpLocalization }}</span>
+          </ng-template>
 
           <p class="card-text mb-1">
-            <strong>Cantidad:</strong>
+            <strong>{{ '::Pantry:Quantity' | abpLocalization }}:</strong>
             <ng-container *ngIf="itemConsumido.cantidad !== null && itemConsumido.cantidad !== undefined; else sinCantidadConsumido">
               {{ itemConsumido.cantidad }}
             </ng-container>
@@ -100,7 +118,7 @@
           </ng-template>
 
           <p class="card-text mb-1">
-            <strong>Unidad:</strong>
+            <strong>{{ '::Pantry:Unit' | abpLocalization }}:</strong>
             <ng-container *ngIf="itemConsumido.unidad; else sinUnidadConsumido">
               {{ itemConsumido.unidad }}
             </ng-container>
@@ -110,8 +128,12 @@
           </ng-template>
 
           <div class="mt-2">
-            <button class="btn btn-sm btn-primary me-2" (click)="abrirModal(itemConsumido)">Editar</button>
-            <button class="btn btn-sm btn-danger" (click)="eliminar(itemConsumido)">Eliminar</button>
+            <button class="btn btn-sm btn-primary me-2" (click)="abrirModal(itemConsumido)">
+              {{ '::Pantry:Edit' | abpLocalization }}
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="eliminar(itemConsumido)">
+              {{ '::Pantry:Delete' | abpLocalization }}
+            </button>
           </div>
         </div>
       </div>

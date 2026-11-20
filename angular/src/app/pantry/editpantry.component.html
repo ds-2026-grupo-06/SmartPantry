@@ -1,27 +1,39 @@
-<h2 mat-dialog-title>Formulario Reactivo</h2>
+<h2 mat-dialog-title>{{ '::Pantry:EditTitle' | abpLocalization }}</h2>
 <mat-dialog-content>
+  <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+    {{ errorMessage | abpLocalization }}
+  </div>
+
   <form [formGroup]="miFormulario">
 
-    <mat-form-field appearance="fill" class="w-full">
-      <mat-label>Cantidad</mat-label>
-      <input matInput type="number" formControlName="cantidad">
+    <mat-form-field appearance="fill" class="w-100 mb-2">
+      <mat-label>{{ '::Pantry:Quantity' | abpLocalization }}</mat-label>
+      <input matInput type="number" formControlName="cantidad" (input)="miFormulario.get('cantidad')?.markAsTouched()">
+      <mat-error *ngIf="miFormulario.get('cantidad')?.invalid">
+        {{ '::Pantry:Validation:QuantityNonNegative' | abpLocalization }}
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="w-full">
-      <mat-label>Unidad</mat-label>
-      <input matInput formControlName="unidad">
+    <mat-form-field appearance="fill" class="w-100 mb-2">
+      <mat-label>{{ '::Pantry:Unit' | abpLocalization }}</mat-label>
+      <input matInput formControlName="unidad" (input)="miFormulario.get('unidad')?.markAsTouched()">
+      <mat-error *ngIf="miFormulario.get('unidad')?.invalid">
+        {{ '::Pantry:Validation:UnitRequired' | abpLocalization }}
+      </mat-error>
     </mat-form-field>
 
-    <!-- Cambiamos a type="date" para que el navegador maneje bien la fecha -->
-    <mat-form-field appearance="fill" class="w-full">
-      <mat-label>Fecha de Vencimiento</mat-label>
-      <input matInput type="date" formControlName="fechaven">
+    <mat-form-field appearance="fill" class="w-100 mb-2">
+      <mat-label>{{ '::Pantry:ExpirationDate' | abpLocalization }}</mat-label>
+      <input matInput type="date" formControlName="fechaven" (input)="miFormulario.get('fechaven')?.markAsTouched()" (change)="miFormulario.get('fechaven')?.markAsTouched()">
+      <mat-error *ngIf="miFormulario.get('fechaven')?.invalid">
+        {{ '::Pantry:Validation:ExpirationInvalid' | abpLocalization }}
+      </mat-error>
     </mat-form-field>
 
     <div class="mb-3">
       <label>
         <input type="checkbox" formControlName="esConsumido" />
-        Consumido
+        {{ '::Pantry:Consumed' | abpLocalization }}
       </label>
     </div>
 
@@ -29,9 +41,10 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button (click)="cancelar()">Cancelar</button>
-  <!-- El botón se habilitará automáticamente en cuanto el formulario sea válido -->
-  <button mat-raised-button color="primary" [disabled]="miFormulario.invalid" (click)="guardar()">
-    Guardar
+  <button mat-button [disabled]="isSaving" (click)="cancelar()">
+    {{ '::Pantry:Cancel' | abpLocalization }}
+  </button>
+  <button mat-raised-button color="primary" [disabled]="miFormulario.invalid || isSaving" (click)="guardar()">
+    {{ '::Pantry:Save' | abpLocalization }}
   </button>
 </mat-dialog-actions>
