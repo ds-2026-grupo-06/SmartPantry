@@ -130,6 +130,28 @@ yarn test --watch=false
 
 ---
 
+## Decisiones de diseño - TP 10 (Pantalla "Mi despensa")
+
+### 1. Uso de `ListService`
+Se utiliza `ListService` de `@abp/ng.core` en `PantryComponent` porque la operación de listado del proxy generado (`PantryItemService.getList`) es paginada (`PagedAndSortedResultRequestDto` $\rightarrow$ `PagedResultDto<PantryItemDto>`). Además, `ListService` provee el observable `list.isLoading$` que permite distinguir de manera reactiva el estado de **carga** frente a los estados de **lista vacía**, **error** y **resultados**.
+
+### 2. Tratamiento de ítems consumidos (Regla de Negocio 6)
+Los ítems marcados como consumidos (`EstadoPantryItem.Consumido = 1`) **no se eliminan automáticamente**. La interfaz los conserva como **historial**, mostrándolos en una sección diferenciada (*"Ítems consumidos (historial)"* / *"Consumed items (history)"*) debajo de la sección de *"Ítems disponibles"*. El usuario puede eliminarlos de forma explícita mediante el botón de eliminación con confirmación previa.
+
+### 3. Criterio de fechas (Local vs. UTC)
+* **En el Worker de vencimientos (TP 08):** `PantryExpirationWorker` y `PantryExpirationManager` aplican **fecha local** (`DateTime.Now.Date`), truncando la comparación al día calendario local.
+* **En la interfaz Angular (TP 10):** Se muestran las fechas utilizando el `DatePipe` de Angular con el formato regional de la aplicación (`date:'shortDate'`), operando también en la zona horaria local del navegador, por lo que **coincide con el criterio de fecha local** aplicado por el worker en el TP 08.
+
+### 4. Manejo de errores HTTP y uso de `skipHandleError` (Consigna 7)
+* **Listado (`getList`) con `skipHandleError: true`:** Se pasa `{ skipHandleError: true }` al invocar `this.pantryService.getList(query, { skipHandleError: true })` para evitar el diálogo modal genérico de ABP cuando el BackEnd está detenido o falla la red, permitiendo que el componente capture el error (`hasError = true`) y renderice en la propia pantalla el estado de error con un mensaje comprensible localizado (`::Pantry:Error`) y el botón **Reintentar** (`::Pantry:Retry`).
+* **Actualización (`update`) con `skipHandleError: true`:** En `MiModalComponent`, la petición `this.pantryService.update(id, dto, { skipHandleError: true })` deshabilita el botón de guardar mientras está en curso (`isSaving = true`) y maneja el error dentro del modal mostrando el mensaje localizado `::Pantry:UpdateError`. De esta forma, si el servidor rechaza los datos, el formulario permanece abierto **sin perder los datos ingresados por el usuario**.
+* **Eliminación (`delete`):** Se mantiene el manejo de errores predeterminado de ABP (`RestService`), que informa cualquier fallo inesperado mediante el diálogo estándar de error de `@abp/ng.theme.shared` sin exponer detalles técnicos ni códigos de estado crudos como único mensaje.
+
+### 5. Aislamiento por usuario en el BackEnd
+`PantryItemAppService` requiere autenticación con `[Authorize]`, filtra los listados por `CurrentUser.GetId()` y verifica la propiedad del ítem en `ObtenerItemPropioAsync(Guid id)` antes de leer, actualizar o eliminar. Si un usuario autenticado intenta acceder o modificar un ítem ajeno, el servidor lanza `EntityNotFoundException`, respondiendo consistentemente con **HTTP 404 (Not Found)** en todas las operaciones.
+
+---
+
 ## Recursos adicionales de ABP
 
 * [Guía del Frontend Angular](./angular/README.md)

@@ -23,13 +23,8 @@ export const APP_ROUTES: Routes = [
     loadChildren: () => import('@abp/ng.setting-management').then(c => c.createRoutes()),
   },
   {
-    path: 'books',
-    loadComponent: () => import('./book/book.component').then(c => c.BookComponent),
-    canActivate: [authGuard, permissionGuard],
-  },
-  {
-    path: 'authors',
-    loadComponent: () => import('./author/author.component').then(c => c.AuthorComponent),
-    canActivate: [authGuard, permissionGuard],
+    path: 'pantry',
+    loadComponent: () => import('./pantry/pantry.component').then(m => m.PantryComponent),
+    canActivate: [authGuard] // <-- Esto es lo que fuerza el login de ABP
   },
 ];
