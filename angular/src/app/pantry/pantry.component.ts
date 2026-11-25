@@ -7,17 +7,59 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angu
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { catchError, throwError } from 'rxjs';
 
 export function fechaValidaValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
-  if (!value || typeof value !== 'string') {
+  if (value === null || value === undefined || value === '') {
+    return null;
+  }
+  if (typeof value !== 'string') {
     return { invalidDate: true };
   }
-  const timestamp = Date.parse(value);
-  if (isNaN(timestamp)) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value.trim());
+  if (!match) {
+    return { invalidDate: true };
+  }
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  if (year < 1900 || month < 1 || month > 12 || day < 1 || day > 31) {
+    return { invalidDate: true };
+  }
+  const parsed = new Date(year, month - 1, day);
+  if (
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
     return { invalidDate: true };
   }
   return null;
+}
+
+export function formatearFechaLocalIso(fechaInput?: string | null): string | null {
+  if (!fechaInput || typeof fechaInput !== 'string' || !fechaInput.trim()) {
+    return null;
+  }
+  const fechaLimpia = fechaInput.trim().substring(0, 10);
+  return `${fechaLimpia}T00:00:00`;
+}
+
+export function normalizarCantidadOpcional(valor: any): number | null {
+  if (valor === null || valor === undefined || valor === '') {
+    return null;
+  }
+  const num = Number(valor);
+  return isNaN(num) ? null : num;
+}
+
+export function normalizarUnidadOpcional(valor: any): string | null {
+  if (valor === null || valor === undefined) {
+    return null;
+  }
+  const limpia = String(valor).trim();
+  return limpia === '' ? null : limpia;
 }
 
 @Component({
@@ -41,7 +83,13 @@ export class PantryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const streamCreator = (query: any) => this.pantryService.getList(query, { skipHandleError: true });
+    const streamCreator = (query: any) =>
+      this.pantryService.getList(query, { skipHandleError: true }).pipe(
+        catchError((err) => {
+          this.hasError = true;
+          return throwError(() => err);
+        })
+      );
 
     this.list.hookToQuery(streamCreator).subscribe({
       next: (response) => {
@@ -59,6 +107,18 @@ export class PantryComponent implements OnInit {
   reintentar() {
     this.hasError = false;
     this.list.get();
+  }
+
+  obtenerFechaLocal(fecha?: string | null): Date | null {
+    if (!fecha) {
+      return null;
+    }
+    const soloFecha = fecha.substring(0, 10);
+    const partes = soloFecha.split('-').map(Number);
+    if (partes.length === 3 && !partes.some(isNaN)) {
+      return new Date(partes[0], partes[1] - 1, partes[2]);
+    }
+    return new Date(fecha);
   }
 
   eliminar(item: PantryItemDto): void {
@@ -94,16 +154,13 @@ export class PantryComponent implements OnInit {
         return;
       }
       if (item.id) {
-        let fechaFormateada = resultado.fechaven;
-        if (fechaFormateada) {
-          fechaFormateada = new Date(resultado.fechaven).toISOString();
-        }
+        const fechaFormateada = formatearFechaLocalIso(resultado.fechaven);
         const nuevoEstado = resultado.esConsumido ? 1 : 0;
         const datosActualizados: CreateUpdatePantryItemDto = {
           idPropietario: item.idPropietario!,
           nombreProducto: item.nombreProducto!,
-          cantidad: resultado.cantidad,
-          unidad: resultado.unidad,
+          cantidad: normalizarCantidadOpcional(resultado.cantidad),
+          unidad: normalizarUnidadOpcional(resultado.unidad),
           fechaVencimiento: fechaFormateada,
           estado: nuevoEstado
         };
@@ -141,11 +198,22 @@ export class MiModalComponent implements OnInit {
     }
     const yaEstaConsumido = this.data?.estado === 1;
     this.miFormulario = this.fb.group({
-      cantidad: [this.data?.cantidad ?? '', [Validators.required, Validators.min(0)]],
-      unidad: [this.data?.unidad ?? '', [Validators.required, Validators.minLength(1), Validators.maxLength(32)]],
-      fechaven: [fechaFormateada, [Validators.required, fechaValidaValidator]],
+      cantidad: [this.data?.cantidad ?? null, [Validators.min(0)]],
+      unidad: [this.data?.unidad ?? null, [Validators.maxLength(32)]],
+      fechaven: [fechaFormateada, [fechaValidaValidator]],
       esConsumido: [yaEstaConsumido]
     });
+  }
+
+  onFechaInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const control = this.miFormulario.get('fechaven');
+    control?.markAsTouched();
+    if (input?.validity?.badInput) {
+      control?.setErrors({ invalidDate: true });
+    } else if (control) {
+      control.updateValueAndValidity();
+    }
   }
 
   guardar(): void {
@@ -160,12 +228,12 @@ export class MiModalComponent implements OnInit {
       this.errorMessage = '';
 
       const formVal = this.miFormulario.value;
-      const fechaFormateada = formVal.fechaven ? new Date(formVal.fechaven).toISOString() : null;
+      const fechaFormateada = formatearFechaLocalIso(formVal.fechaven);
       const datosActualizados: CreateUpdatePantryItemDto = {
         idPropietario: item.idPropietario!,
         nombreProducto: item.nombreProducto!,
-        cantidad: formVal.cantidad,
-        unidad: formVal.unidad,
+        cantidad: normalizarCantidadOpcional(formVal.cantidad),
+        unidad: normalizarUnidadOpcional(formVal.unidad),
         fechaVencimiento: fechaFormateada,
         estado: formVal.esConsumido ? 1 : 0
       };

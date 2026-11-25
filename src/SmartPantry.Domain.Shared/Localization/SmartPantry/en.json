@@ -67,8 +67,8 @@
     "Pantry:Cancel": "Cancel",
     "Pantry:Save": "Save",
     "Pantry:UpdateError": "Could not save changes. Please verify the entered data and try again.",
-    "Pantry:Validation:QuantityNonNegative": "Quantity is required and cannot be negative.",
-    "Pantry:Validation:UnitRequired": "Unit is required and must not exceed 32 characters.",
+    "Pantry:Validation:QuantityNonNegative": "Quantity cannot be negative.",
+    "Pantry:Validation:UnitRequired": "Unit must not exceed 32 characters.",
     "Pantry:Validation:ExpirationInvalid": "Please enter a valid expiration date."
   }
 }

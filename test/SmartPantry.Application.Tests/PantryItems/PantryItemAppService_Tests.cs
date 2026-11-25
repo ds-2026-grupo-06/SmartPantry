@@ -1,9 +1,12 @@
 using Shouldly;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Authorization;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Security.Claims;
 using Volo.Abp.Validation;
 using Xunit;
 
@@ -167,5 +170,43 @@ public class PantryItemAppService_Tests : SmartPantryApplicationTestBase<SmartPa
                 Unidad = new string('x', 50)
             });
         });
+    }
+
+    [Fact]
+    public async Task CreateAsync_NoDebePermitirCrearItemANombreDeOtroUsuario()
+    {
+        // 1. Con usuario autenticado, ignora el IdPropietario enviado por el cliente y asigna el usuario actual
+        var creado = await _pantryItemAppService.CreateAsync(new CreateUpdatePantryItemDto
+        {
+            IdPropietario = OtroUsuarioId,
+            NombreProducto = "Aceite de Oliva",
+            Estado = EstadoPantryItem.Disponible,
+            Cantidad = 1,
+            Unidad = "botella"
+        });
+
+        creado.IdPropietario.ShouldBe(UsuarioAutenticadoId);
+        creado.IdPropietario.ShouldNotBe(OtroUsuarioId);
+
+        await WithUnitOfWorkAsync(async () =>
+        {
+            var itemEnBase = await _pantryItemRepository.GetAsync(creado.Id);
+            itemEnBase.IdPropietario.ShouldBe(UsuarioAutenticadoId);
+        });
+
+        // 2. Sin identidad autenticada, rechaza la operación aunque el cliente envíe un IdPropietario
+        var currentPrincipalAccessor = GetRequiredService<ICurrentPrincipalAccessor>();
+        using (currentPrincipalAccessor.Change(new ClaimsPrincipal(new ClaimsIdentity())))
+        {
+            await Should.ThrowAsync<AbpAuthorizationException>(async () =>
+            {
+                await _pantryItemAppService.CreateAsync(new CreateUpdatePantryItemDto
+                {
+                    IdPropietario = OtroUsuarioId,
+                    NombreProducto = "Ítem Sin Usuario",
+                    Estado = EstadoPantryItem.Disponible
+                });
+            });
+        }
     }
 }
