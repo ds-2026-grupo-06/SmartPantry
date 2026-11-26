@@ -59,8 +59,8 @@
     "Pantry:Cancel": "Cancelar",
     "Pantry:Save": "Guardar",
     "Pantry:UpdateError": "No se pudieron guardar los cambios. Verifique los datos ingresados e intente nuevamente.",
-    "Pantry:Validation:QuantityNonNegative": "La cantidad es obligatoria y no puede ser negativa.",
-    "Pantry:Validation:UnitRequired": "La unidad es obligatoria y no debe superar los 32 caracteres.",
+    "Pantry:Validation:QuantityNonNegative": "La cantidad no puede ser negativa.",
+    "Pantry:Validation:UnitRequired": "La unidad no debe superar los 32 caracteres.",
     "Pantry:Validation:ExpirationInvalid": "Debe ingresar una fecha de vencimiento válida."
   }
 }

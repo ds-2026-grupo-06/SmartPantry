@@ -24,7 +24,7 @@
 
     <mat-form-field appearance="fill" class="w-100 mb-2">
       <mat-label>{{ '::Pantry:ExpirationDate' | abpLocalization }}</mat-label>
-      <input matInput type="date" formControlName="fechaven" (input)="miFormulario.get('fechaven')?.markAsTouched()" (change)="miFormulario.get('fechaven')?.markAsTouched()">
+      <input matInput type="date" formControlName="fechaven" (input)="onFechaInput($event)" (change)="onFechaInput($event)">
       <mat-error *ngIf="miFormulario.get('fechaven')?.invalid">
         {{ '::Pantry:Validation:ExpirationInvalid' | abpLocalization }}
       </mat-error>

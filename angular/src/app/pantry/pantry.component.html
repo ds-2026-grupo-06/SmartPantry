@@ -30,7 +30,7 @@
           <p class="card-text mb-1">
             <strong>{{ '::Pantry:ExpirationDate' | abpLocalization }}:</strong>
             <ng-container *ngIf="item.fechaVencimiento; else sinVencimiento">
-              {{ item.fechaVencimiento | date:'shortDate' }}
+              {{ obtenerFechaLocal(item.fechaVencimiento) | date:'shortDate' }}
             </ng-container>
           </p>
           <ng-template #sinVencimiento>
@@ -100,7 +100,7 @@
           <p class="card-text mb-1">
             <strong>{{ '::Pantry:ExpirationDate' | abpLocalization }}:</strong>
             <ng-container *ngIf="itemConsumido.fechaVencimiento; else sinVencimientoConsumido">
-              {{ itemConsumido.fechaVencimiento | date:'shortDate' }}
+              {{ obtenerFechaLocal(itemConsumido.fechaVencimiento) | date:'shortDate' }}
             </ng-container>
           </p>
           <ng-template #sinVencimientoConsumido>

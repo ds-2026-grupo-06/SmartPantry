@@ -221,11 +221,11 @@ describe('PantryComponent & MiModalComponent (TP 10 - Consigna 8)', () => {
     const modalComponent = modalFixture.componentInstance;
     modalFixture.detectChanges();
 
-    // Cantidad negativa (-3) y fecha inválida ('')
+    // Cantidad negativa (-3) y fecha inválida ('2026-02-30')
     modalComponent.miFormulario.patchValue({
       cantidad: -3,
       unidad: 'litros',
-      fechaven: '',
+      fechaven: '2026-02-30',
     });
     modalFixture.detectChanges();
 
@@ -271,5 +271,63 @@ describe('PantryComponent & MiModalComponent (TP 10 - Consigna 8)', () => {
     expect(warnCalls.length).toBe(1);
     expect(deleteCalls).toEqual(['item-100']);
     expect(listGetCallCount).toBe(1);
+  });
+
+  it('8. Recorrido de fecha de vencimiento: editar y guardar 2026-12-20 conserva el día 20/12/2026 sin desfase UTC', () => {
+    const modalFixture = TestBed.createComponent(MiModalComponent);
+    const modalComponent = modalFixture.componentInstance;
+    modalFixture.detectChanges();
+
+    expect(modalComponent.miFormulario.get('fechaven')?.value).toBe('2026-12-20');
+
+    modalComponent.miFormulario.patchValue({
+      cantidad: 3,
+      unidad: 'litros',
+      fechaven: '2026-12-20',
+    });
+    modalComponent.guardar();
+
+    expect(updateCalls.length).toBe(1);
+    expect(updateCalls[0].input.fechaVencimiento).toBe('2026-12-20T00:00:00');
+
+    createPantryComponent();
+    const fechaRenderizada = component.obtenerFechaLocal(updateCalls[0].input.fechaVencimiento);
+    expect(fechaRenderizada?.getFullYear()).toBe(2026);
+    expect(fechaRenderizada?.getMonth()).toBe(11); // Diciembre (0-indexed)
+    expect(fechaRenderizada?.getDate()).toBe(20);
+  });
+
+  it('9. Edición con datos opcionales sin informar: permite editar un dato y guardar manteniendo null en los datos faltantes sin inventar valores', () => {
+    const modalFixture = TestBed.createComponent(MiModalComponent);
+    const modalComponent = modalFixture.componentInstance;
+    modalComponent.data = {
+      item: {
+        id: 'item-sin-datos',
+        idPropietario: 'user-1',
+        nombreProducto: 'Arroz sin datos opcionales',
+        estado: 0,
+      },
+      cantidad: null,
+      unidad: null,
+      fechaven: null,
+      estado: 0,
+    };
+    modalComponent.ngOnInit();
+    modalFixture.detectChanges();
+
+    // Editar únicamente la unidad dejando cantidad y fecha de vencimiento sin informar
+    modalComponent.miFormulario.patchValue({
+      unidad: 'paquetes',
+    });
+    modalFixture.detectChanges();
+
+    expect(modalComponent.miFormulario.valid).toBe(true);
+    modalComponent.guardar();
+
+    expect(updateCalls.length).toBe(1);
+    expect(updateCalls[0].id).toBe('item-sin-datos');
+    expect(updateCalls[0].input.unidad).toBe('paquetes');
+    expect(updateCalls[0].input.cantidad).toBeNull();
+    expect(updateCalls[0].input.fechaVencimiento).toBeNull();
   });
 });

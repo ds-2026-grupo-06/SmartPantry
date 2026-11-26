@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Authorization;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
@@ -59,7 +60,12 @@ public class PantryItemAppService : CrudAppService<
 
     public override async Task<PantryItemDto> CreateAsync(CreateUpdatePantryItemDto input)
     {
-        var idPropietario = CurrentUser.Id ?? input.IdPropietario;
+        if (!CurrentUser.Id.HasValue)
+        {
+            throw new AbpAuthorizationException("Se requiere un usuario autenticado para crear un ítem de despensa.");
+        }
+
+        var idPropietario = CurrentUser.GetId();
         var pantryItem = new PantryItem(
             GuidGenerator.Create(),
             idPropietario,
